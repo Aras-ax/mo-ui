@@ -12,205 +12,205 @@
       desc="基于8点网格法Tenda在 PC上采用24栅格体系。将区域分成 24 块栅格，页面中的列会随着页面尺寸的变化而变化。"
     >
       响应式设计可以响应的前两点：1、页面布局具有规律性、2、元素宽高可用百分比代替固定数值，而这两点正是栅格系统本身就具有的典型特点，所以利用栅格系统进行响应式的设计是顺理成章的，也比较高效快捷，所以响应式与栅格化天生一对好搭档。栅格系统页面具有规律性、元素宽高可用百分比表示。
-      <v-row class="demo-row" gutter="2">
-        <v-col :span="1">
+      <mo-row class="demo-row" gutter="2">
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-        <v-col :span="1">
+        </mo-col>
+        <mo-col :span="1">
           <div class="demo-col demo-col-1">1</div>
-        </v-col>
-      </v-row>
-      <v-row class="demo-row">
-        <v-col>
+        </mo-col>
+      </mo-row>
+      <mo-row class="demo-row">
+        <mo-col>
           <div class="demo-col">24</div>
-        </v-col>
-      </v-row>
-      <v-row class="demo-row" :gutter="4">
-        <v-col :span="12">
+        </mo-col>
+      </mo-row>
+      <mo-row class="demo-row" :gutter="4">
+        <mo-col :span="12">
           <div class="demo-col">12</div>
-        </v-col>
-        <v-col :span="12">
+        </mo-col>
+        <mo-col :span="12">
           <div class="demo-col">12</div>
-        </v-col>
-      </v-row>
-      <v-row class="demo-row" :gutter="4">
-        <v-col :span="8">
+        </mo-col>
+      </mo-row>
+      <mo-row class="demo-row" :gutter="4">
+        <mo-col :span="8">
           <div class="demo-col">8</div>
-        </v-col>
-        <v-col :span="8">
+        </mo-col>
+        <mo-col :span="8">
           <div class="demo-col">8</div>
-        </v-col>
-        <v-col :span="8">
+        </mo-col>
+        <mo-col :span="8">
           <div class="demo-col">8</div>
-        </v-col>
-      </v-row>
-      <v-row class="demo-row" :gutter="4">
-        <v-col :span="6">
+        </mo-col>
+      </mo-row>
+      <mo-row class="demo-row" :gutter="4">
+        <mo-col :span="6">
           <div class="demo-col">6</div>
-        </v-col>
-        <v-col :span="6">
+        </mo-col>
+        <mo-col :span="6">
           <div class="demo-col">6</div>
-        </v-col>
-        <v-col :span="6">
+        </mo-col>
+        <mo-col :span="6">
           <div class="demo-col">6</div>
-        </v-col>
-        <v-col :span="6">
+        </mo-col>
+        <mo-col :span="6">
           <div class="demo-col">6</div>
-        </v-col>
-      </v-row>
-      <v-row class="demo-row" :gutter="4">
-        <v-col :span="4">
+        </mo-col>
+      </mo-row>
+      <mo-row class="demo-row" :gutter="4">
+        <mo-col :span="4">
           <div class="demo-col">4</div>
-        </v-col>
-        <v-col :span="4">
+        </mo-col>
+        <mo-col :span="4">
           <div class="demo-col">4</div>
-        </v-col>
-        <v-col :span="4">
+        </mo-col>
+        <mo-col :span="4">
           <div class="demo-col">4</div>
-        </v-col>
-        <v-col :span="4">
+        </mo-col>
+        <mo-col :span="4">
           <div class="demo-col">4</div>
-        </v-col>
-        <v-col :span="4">
+        </mo-col>
+        <mo-col :span="4">
           <div class="demo-col">4</div>
-        </v-col>
-        <v-col :span="4">
+        </mo-col>
+        <mo-col :span="4">
           <div class="demo-col">4</div>
-        </v-col>
-      </v-row>
-      <v-row class="demo-row" :gutter="4">
-        <v-col :span="2">
+        </mo-col>
+      </mo-row>
+      <mo-row class="demo-row" :gutter="4">
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-        <v-col :span="2">
+        </mo-col>
+        <mo-col :span="2">
           <div class="demo-col">2</div>
-        </v-col>
-      </v-row>
+        </mo-col>
+      </mo-row>
     </r-h>
-    <r-h tag="h2" title="v-col属性配置" desc="各属性配置">
-      <v-row class="demo-row" :gutter="4">
-        <v-col :span="6" class="border">
+    <r-h tag="h2" title="mo-col属性配置" desc="各属性配置">
+      <mo-row class="demo-row" :gutter="4">
+        <mo-col :span="6" class="border">
           <div class="demo-col">6</div>
-        </v-col>
-        <v-col :span="6" :offset="4" class="border">
+        </mo-col>
+        <mo-col :span="6" :offset="4" class="border">
           <div class="demo-col">span=6 offset=4</div>
-        </v-col>
-        <v-col :span="6" :offset="2" :padding="14" class="border">
+        </mo-col>
+        <mo-col :span="6" :offset="2" :padding="14" class="border">
           <div class="demo-col">offset=2 padding=14</div>
-        </v-col>
-      </v-row>
+        </mo-col>
+      </mo-row>
     </r-h>
-    <r-h tag="h2" title="v-col属性配置" desc="各属性配置">
-      <v-row class="demo-row" :gutter="4">
-        <v-col :span="6">
+    <r-h tag="h2" title="mo-col属性配置" desc="各属性配置">
+      <mo-row class="demo-row" :gutter="4">
+        <mo-col :span="6">
           <div class="demo-col">6</div>
-        </v-col>
-        <v-col :span="4" :offset="2">
+        </mo-col>
+        <mo-col :span="4" :offset="2">
           <div class="demo-col">span=4 offset=2</div>
-        </v-col>
-        <v-col :span="6" :padding="14">
+        </mo-col>
+        <mo-col :span="6" :padding="14">
           <div class="demo-col">padding=14</div>
-        </v-col>
-        <v-col :span="6" tag="span">
+        </mo-col>
+        <mo-col :span="6" tag="span">
           <div class="demo-col">tag="span"</div>
-        </v-col>
-      </v-row>
+        </mo-col>
+      </mo-row>
     </r-h>
   </r-page>
 </template>

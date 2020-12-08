@@ -460,7 +460,7 @@ function toRadians(degrees) {
 // 单例模式
 let svgTarget = null;
 // svg获取文本高宽类
-class SvgHandle {
+export class SvgHandle {
   constructor() {
     if (svgTarget) {
       return svgTarget;
@@ -483,7 +483,7 @@ class SvgHandle {
     svgTarget = this;
 
     this.svgHeight = 0;
-    this.getTextHeight("Test");
+    this.getTextHeight();
   }
 
   setSize(fontsize) {
@@ -493,7 +493,7 @@ class SvgHandle {
   /**
    * 获取文本的宽
    */
-  getTextWidth(text) {
+  getTextWidth(text = "MoShang") {
     this.textNode.textContent = text;
     return this.textNode.getBBox().width;
   }
@@ -501,7 +501,7 @@ class SvgHandle {
   /**
    * 获取文本的高
    */
-  getTextHeight(text) {
+  getTextHeight(text = "MoShang") {
     this.textNode.textContent = text;
     this.svgHeight = this.textNode.getBBox().height;
     return this.svgHeight;

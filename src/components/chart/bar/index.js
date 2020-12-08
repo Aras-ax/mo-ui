@@ -1,4 +1,4 @@
-import Bar from "./v-chart-bar.vue";
+import Bar from "./bar.vue";
 
 Bar.install = function install(Vue) {
   Vue.component(Bar.name, Bar);

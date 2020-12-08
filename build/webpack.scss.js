@@ -50,7 +50,7 @@ module.exports = {
         options: {
           publicPath: "../../fonts/",
           outputPath: "../fonts/",
-          name: "v-[name].[ext]?[hash:7]"
+          name: "mo-[name].[ext]?[hash:7]"
         }
       }
     ]

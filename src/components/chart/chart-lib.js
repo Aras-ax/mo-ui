@@ -1,17 +1,17 @@
 // 图标默认颜色分类
 export const DEFAULT_COLORS = [
-  "#ffcd58",
-  "#ace06f",
-  "#7ee6f2",
   "#6ebbff",
-  "#ff7348",
-  "#b792f7"
+  "#7ee6f2",
+  "#ace06f",
+  "#ffcd58",
+  "#b792f7",
+  "#ff7348"
 ];
 
 // 图表基础配置
 export const CHARTBASE_CONFIG = {
   comment: {
-    height: 20,
+    height: 22,
     fontsize: 12
   },
   title: {

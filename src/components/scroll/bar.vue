@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'v-scroll__bar',
+      'mo-scroll__bar',
       direct === 'y' ? 'is-vertical' : 'is-horizontal',
       { active: isDragging }
     ]"
@@ -9,7 +9,7 @@
   >
     <div
       ref="slider"
-      class="v-scroll__bar__slider"
+      class="mo-scroll__bar__slider"
       :style="style"
       @mousedown="mousedown"
     ></div>

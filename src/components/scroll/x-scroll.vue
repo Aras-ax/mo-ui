@@ -1,5 +1,5 @@
 <template>
-  <v-scroll
+  <mo-scroll
     ref="scroll"
     :height="height"
     :width="width"
@@ -8,7 +8,7 @@
     :toIndex="toIndex"
   >
     <slot></slot>
-  </v-scroll>
+  </mo-scroll>
 </template>
 
 <script>

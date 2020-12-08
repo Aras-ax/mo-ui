@@ -1,5 +1,5 @@
 export default {
-  name: "v-col",
+  name: "mo-col",
   props: {
     span: {
       type: Number,
@@ -23,7 +23,7 @@ export default {
       let gutter = 0;
       let $parent = this.$parent;
       while ($parent) {
-        if ($parent.$options.name === "v-row") {
+        if ($parent.$options.name === "mo-row") {
           gutter = $parent.gutter;
           break;
         }
@@ -38,7 +38,7 @@ export default {
     return h(
       this.tag,
       {
-        class: [`v-col__${this.span}`, `v-col--offset__${this.offset}`],
+        class: [`mo-col__${this.span}`, `mo-col--offset__${this.offset}`],
         style: this.style
       },
       [this.$slots.default]

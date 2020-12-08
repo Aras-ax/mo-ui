@@ -1,7 +1,7 @@
 <template>
   <chart-base
     ref="chartbase"
-    class="v-chart-line"
+    class="mo-chart-line"
     :isOffset="isOffset"
     :title="title"
     :comment="comment"
@@ -59,18 +59,18 @@
     <template v-slot:tip>
       <transition name="fade">
         <div
-          class="v-chart__tip"
+          class="mo-chart__tip"
           v-if="showTip && tipIndex > -1"
           :style="tipStyle"
         >
           <div>{{ categories[tipIndex] }}</div>
           <div
-            class="v-chart__tip__data"
+            class="mo-chart__tip__data"
             v-for="(item, i) in hoverPoints"
             :key="i"
           >
             <i
-              class="v-chart__tip__data__point"
+              class="mo-chart__tip__data__point"
               :style="{ background: legendColor[item.legend] }"
             ></i>
             <span>{{ item.data }}</span>
@@ -88,7 +88,7 @@ import { BezierCurve } from "../chart-lib";
 import { TIP_OFFSET_TOP, TIP_OFFSET_HORIZONTAL } from "../chart-lib";
 
 export default {
-  name: "v-chart-line",
+  name: "mo-chart-line",
   mixins: [mixin, BarLineMixin, ChartProps],
   data() {
     this.axis = {};

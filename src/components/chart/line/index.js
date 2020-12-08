@@ -1,4 +1,4 @@
-import Line from "./v-chart-line.vue";
+import Line from "./line.vue";
 
 Line.install = function install(Vue) {
   Vue.component(Line.name, Line);

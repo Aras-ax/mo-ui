@@ -1,5 +1,5 @@
 export default {
-  name: "v-row",
+  name: "mo-row",
   props: {
     gutter: {
       type: [Number, String],
@@ -7,11 +7,11 @@ export default {
       validator(val) {
         val = parseInt(val);
         if (val < 0) {
-          console.error("[v-row]的[gutter]属性必须大于零");
+          console.error("[mo-row]的[gutter]属性必须大于零");
           return false;
         }
         if (val % 2 !== 0) {
-          console.warn("[v-row]的[gutter]属性建议设成偶数");
+          console.warn("[mo-row]的[gutter]属性建议设成偶数");
           return false;
         }
         return true;
@@ -36,7 +36,7 @@ export default {
     return h(
       this.tag,
       {
-        class: ["v-row"],
+        class: ["mo-row"],
         style: this.style
       },
       [this.$slots.default]

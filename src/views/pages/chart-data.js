@@ -90,3 +90,16 @@ export const CHART_DATA_SERIES21 = [
   }
 ];
 export const CHART_DATA_CATEGORIES11 = ["类别1", "类别2", "类别3", "类别4"];
+export const CHART_DATA_SERIES_PIE = [100, 80, 160, 40, 20, 10, 10, 10, 10, 10];
+export const CHART_DATA_CATEGORIES_PIE = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10"
+];

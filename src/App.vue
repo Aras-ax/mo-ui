@@ -21,7 +21,7 @@
     </header>
     <main class="main">
       <nav class="main-nav">
-        <v-scroll>
+        <mo-scroll>
           <ul>
             <!-- <template v-if="route.title"> -->
             <li v-for="route in routes" :key="route.name">
@@ -35,7 +35,7 @@
             </li>
             <!-- </template> -->
           </ul>
-        </v-scroll>
+        </mo-scroll>
       </nav>
       <section class="main-body">
         <router-view />

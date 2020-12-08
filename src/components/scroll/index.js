@@ -1,5 +1,5 @@
-import Scroll from "./v-scroll.vue";
-import XScroll from "./v-x-scroll.vue";
+import Scroll from "./scroll.vue";
+import XScroll from "./x-scroll.vue";
 
 Scroll.install = function install(Vue) {
   Vue.component(Scroll.name, Scroll);

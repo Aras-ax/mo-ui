@@ -1,44 +1,44 @@
 <template>
   <r-page>
     <r-h tag="h1" title="滚动条" desc="demo">
-      <v-scroll style="border: 1px solid #eee;" :height="200">
+      <mo-scroll style="border: 1px solid #eee;" :height="200">
         <div style="  width: 400px; word-break:break-word; padding:  12px;">
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll v-scroll
-          v-scroll v-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll mo-scroll
+          mo-scroll mo-scroll
         </div>
-      </v-scroll>
+      </mo-scroll>
     </r-h>
 
     <r-h tag="h2" title="属性配置">
-      <v-row :gutter="8">
-        <v-col :span="10">
+      <mo-row :gutter="8">
+        <mo-col :span="10">
           <div>scrollToX: 100</div>
-          <v-scroll style="border: 1px solid #eee;" :height="200" :toX="100">
+          <mo-scroll style="border: 1px solid #eee;" :height="200" :toX="100">
             <div style="height: 1000px;  width: 600px">
               scrollToX="100" scrollToX="100" scrollToX="100" scrollToX="100"
               scrollToX="100" scrollToX="100" scrollToX="100" scrollToX="100"
               scrollToX="100" scrollToX="100" scrollToX="100" scrollToX="100"
               scrollToX="100" scrollToX="100" scrollToX="100"
             </div>
-          </v-scroll>
-        </v-col>
+          </mo-scroll>
+        </mo-col>
 
-        <v-col :offset="2" :span="10">
+        <mo-col :offset="2" :span="10">
           <div>scrollToY: 100</div>
-          <v-scroll
+          <mo-scroll
             style="border: 1px solid #eee;"
             :height="200"
             :to-y="100"
@@ -54,13 +54,13 @@
               scrollToY="100" scrollToY="100" scrollToY="100" scrollToY="100"
               scrollToY="100" scrollToY="100"
             </div>
-          </v-scroll>
-        </v-col>
-      </v-row>
-      <v-row :gutter="8">
-        <v-col :span="12">
+          </mo-scroll>
+        </mo-col>
+      </mo-row>
+      <mo-row :gutter="8">
+        <mo-col :span="12">
           <div>scrollToIndex: 3</div>
-          <v-scroll style="border: 1px solid #eee;" :height="200" :toIndex="3">
+          <mo-scroll style="border: 1px solid #eee;" :height="200" :toIndex="3">
             <ul>
               <li
                 v-for="i in 20"
@@ -70,13 +70,13 @@
                 第{{ i }}个
               </li>
             </ul>
-          </v-scroll>
-        </v-col>
-      </v-row>
+          </mo-scroll>
+        </mo-col>
+      </mo-row>
     </r-h>
     <r-h tag="h2" title="Methods">
-      <v-row>
-        <v-col :span="12">
+      <mo-row>
+        <mo-col :span="12">
           <div>
             scrollTo(selector)
             <button @click.stop.prevent="toIndex('#selector8')">
@@ -84,7 +84,7 @@
             </button>
           </div>
 
-          <v-scroll style="border: 1px solid #eee;" :height="200" ref="scroll">
+          <mo-scroll style="border: 1px solid #eee;" :height="200" ref="scroll">
             <ul>
               <li
                 v-for="i in 20"
@@ -95,13 +95,13 @@
                 selector#{{ i }}
               </li>
             </ul>
-          </v-scroll>
-        </v-col>
-      </v-row>
+          </mo-scroll>
+        </mo-col>
+      </mo-row>
     </r-h>
     <r-h tag="h1" title="v-x-scroll">
-      <v-row :gutter="12">
-        <v-col :span="12">
+      <mo-row :gutter="12">
+        <mo-col :span="12">
           <v-x-scroll :count="count" :width="200">
             <ul>
               <li
@@ -114,8 +114,8 @@
             </ul>
           </v-x-scroll>
           <button @click.stop.prevent="changeCount">显示{{ count }}行</button>
-        </v-col>
-        <v-col :span="12">
+        </mo-col>
+        <mo-col :span="12">
           <v-x-scroll :count="count1" :width="200">
             <ul>
               <li
@@ -128,8 +128,8 @@
             </ul>
           </v-x-scroll>
           <button @click.stop.prevent="changeCount1">切换({{ count1 }})</button>
-        </v-col>
-      </v-row>
+        </mo-col>
+      </mo-row>
     </r-h>
   </r-page>
 </template>

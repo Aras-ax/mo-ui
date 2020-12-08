@@ -1,11 +1,11 @@
 <template>
-  <section class="v-chart">
+  <section class="mo-chart">
     <svg
       :width="renderWidth"
       :height="renderHeight"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <text name="title" x="0" :y="titleY" v-if="title" class="v-chart__title">
+      <text name="title" x="0" :y="titleY" v-if="title" class="mo-chart__title">
         {{ title }}
       </text>
       <g name="axis" ref="back"></g>
@@ -15,39 +15,27 @@
         x="100%"
         :y="commentY"
         v-if="comment"
-        class="v-chart__comment"
+        class="mo-chart__comment"
         text-anchor="end"
       >
         {{ comment }}
       </text>
     </svg>
     <!-- legends -->
-    <div
-      class="v-chart__legends"
+    <mo-chart-legend
       :style="{ top: `${legendY}px`, right: `3px` }"
-    >
-      <label
-        class="legend"
-        v-for="item in legends"
-        :key="item"
-        @click.prevent.stop="change(item)"
-      >
-        <i
-          :style="{
-            background: hideLegends[item] ? '#ddd' : legendColor[item]
-          }"
-        ></i>
-        <span :style="{ color: hideLegends[item] ? '#ddd' : 'inherit' }">{{
-          item
-        }}</span>
-      </label>
-    </div>
+      :legends="legends"
+      :legendColor="legendColor"
+      :hideLegends="hideLegends"
+      @change="change"
+    ></mo-chart-legend>
     <!-- tool tip -->
     <slot name="tip"></slot>
   </section>
 </template>
 
 <script>
+import MoChartLegend from "./legend.vue";
 import ChartAxis from "./axis";
 import { CHARTBASE_CONFIG } from "./chart-lib";
 import mixin from "./chart-mixins";
@@ -76,10 +64,6 @@ export default {
             CHARTBASE_CONFIG.title.fontsize
         : 0;
     },
-    // 图例在Y轴的位置
-    legendY() {
-      return (this.title ? CHARTBASE_CONFIG.title.height : 0) + 1;
-    },
     // 注释在Y轴的位置
     commentY() {
       return this.comment
@@ -89,8 +73,9 @@ export default {
               2
         : 0;
     },
-    chartSeries() {
-      return this.series.filter(item => !this.hideLegends[item.name]);
+    // 图例在Y轴的位置
+    legendY() {
+      return (this.title ? CHARTBASE_CONFIG.title.height : 0) + 1;
     },
     legendColor() {
       let l = this.series.length;
@@ -98,7 +83,14 @@ export default {
         obj[item.name] = this.colors[i % l];
         return obj;
       }, {});
+    },
+
+    chartSeries() {
+      return this.series.filter(item => !this.hideLegends[item.name]);
     }
+  },
+  components: {
+    MoChartLegend
   },
   methods: {
     calcuate() {

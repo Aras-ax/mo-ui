@@ -1,7 +1,7 @@
-.v-chart {
+.mo-chart {
   position: relative;
 
-  .v-chart__ {
+  .mo-chart__ {
     &title {
       font-size: 16px;
       font-weight: 500;
@@ -89,6 +89,29 @@
     }
   }
 }
+.mo-chart__legends {
+  overflow: hidden;
+  background-color: #fff;
+  transition: height 0.3s;
+  &__slide {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    line-height: 22px;
+    width: 22px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .icon {
+    display: inline-block;
+    transition: transform 0.3s;
+    &.active {
+      transform: rotate(180deg);
+    }
+  }
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s, left 0.5s, right 0.5s;

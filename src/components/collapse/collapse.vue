@@ -1,5 +1,5 @@
 <template>
-  <div class="v-collapse border-b">
+  <div class="mo-collapse border-b">
     <div
       class="v-collapse__header"
       :class="{ 'is-active': isActive }"
@@ -25,7 +25,7 @@
 import CollapseTransition from "./collapse-transition";
 
 export default {
-  name: "v-collapse",
+  name: "mo-collapse",
   props: {
     title: String,
     actived: {

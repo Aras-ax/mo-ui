@@ -1,13 +1,13 @@
 $background: rgb(144, 147, 153);
 
-.v-scroll {
+.mo-scroll {
   overflow: hidden;
   position: relative;
   // 创建新的层叠上下文
   z-index: 0;
 
   &:hover {
-    & > .v-scroll__bar {
+    & > .mo-scroll__bar {
       opacity: 1;
     }
   }
@@ -46,7 +46,7 @@ $background: rgb(144, 147, 153);
       top: 0;
       width: 6px;
 
-      .v-scroll__bar__slider {
+      .mo-scroll__bar__slider {
         width: 100%;
         height: 0;
       }
@@ -56,7 +56,7 @@ $background: rgb(144, 147, 153);
       left: 0;
       height: 6px;
 
-      .v-scroll__bar__slider {
+      .mo-scroll__bar__slider {
         height: 100%;
         width: 0;
       }

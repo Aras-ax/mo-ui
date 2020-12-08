@@ -1,7 +1,7 @@
 <template>
   <chart-base
     ref="chartbase"
-    class="v-chart-bar"
+    class="mo-chart-bar"
     :isOffset="true"
     :title="title"
     :comment="comment"
@@ -54,14 +54,14 @@
     <template v-slot:tip>
       <transition name="fade">
         <div
-          class="v-chart__tip"
+          class="mo-chart__tip"
           v-if="showTip && tipIndex > -1"
           :style="tipStyle"
         >
           <div>{{ barList[tipIndex].legend }}</div>
-          <div class="v-chart__tip__data">
+          <div class="mo-chart__tip__data">
             <i
-              class="v-chart__tip__data__point"
+              class="mo-chart__tip__data__point"
               :style="{ background: legendColor[barList[tipIndex].legend] }"
             ></i>
             <span>{{ barList[tipIndex].value | format }}</span>
@@ -82,7 +82,7 @@ import {
 } from "../chart-lib";
 
 export default {
-  name: "v-chart-bar",
+  name: "mo-chart-bar",
   mixins: [mixin, BarLineMixin, ChartProps],
   props: {
     showValue: {

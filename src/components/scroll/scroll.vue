@@ -1,10 +1,10 @@
 <template>
   <div
-    class="v-scroll"
+    class="mo-scroll"
     :style="{ maxHeight: wrapHeight + 'px', maxWidth: wrapWidth + 'px' }"
   >
     <!-- 滚动条体 -->
-    <div ref="view" class="v-scroll__wrap" :style="style" @scroll="scroll">
+    <div ref="view" class="mo-scroll__wrap" :style="style" @scroll="scroll">
       <slot></slot>
     </div>
     <!-- 垂直滚动条 -->
@@ -33,7 +33,7 @@ import { getScrollWidth } from "./scroll-lib.js";
 import Bar from "./bar.vue";
 
 export default {
-  name: "v-scroll",
+  name: "mo-scroll",
   props: {
     // 内容区域高
     height: {

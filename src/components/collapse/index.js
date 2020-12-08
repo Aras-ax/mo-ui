@@ -1,4 +1,4 @@
-import Collapse from "./v-collapse.vue";
+import Collapse from "./collapse.vue";
 
 /* istanbul ignore next */
 Collapse.install = function install(Vue) {
