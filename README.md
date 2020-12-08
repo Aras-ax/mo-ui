@@ -3,14 +3,14 @@
 # 接口
 ## 栅格布局
 
-### v-row Attributes
+### mo-row Attributes
 
 | 参数   | 说明              | 类型   | 可选值 | 默认值 |
 | ------ | ----------------- | ------ | ------ | ------ |
 | gutter | 列间隔，单位px    | number | -      | 0      |
 | tag    | 自定义row元素标签 | string |        | div    |
 
-### v-col Attribute
+### mo-col Attribute
 
 | 参数    | 说明                             | 类型   | 可选值 | 默认值 |
 | ------- | -------------------------------- | ------ | ------ | ------ |
@@ -25,10 +25,10 @@
 | ------- | -------- |
 | default | 内容区域 |
 
-> v-row和v-col内都有默认的slot承载内容
+> mo-row和mo-col内都有默认的slot承载内容
 
 
-## v-chart-line
+## mo-chart-line
 
 ### 属性 Attributes
 
@@ -64,7 +64,7 @@
 
 
 
-## v-chart-bar
+## mo-chart-bar
 
 ### 属性 Attributes
 
@@ -99,7 +99,7 @@
 
 
 
-## v-chart-pie
+## mo-chart-pie
 
 ### 属性 Attributes
 
@@ -128,7 +128,7 @@
 
 
 
-## v-chart-percent 
+## mo-chart-percent 
 
 ### 属性 Attributes
 
@@ -151,7 +151,7 @@
 
 
 
-## v-collapse 
+## mo-collapse 
 
 ### 属性 Attributes
 
@@ -176,7 +176,7 @@
 | switch | 展开收起状态切换 | actived属性值 |
 
 
-## v-scroll 滚动条
+## mo-scroll 滚动条
 
 | 参数          | 说明                           | 类型   | 可选值 | 默认值 |
 | ------------- | ------------------------------ | ------ | ------ | ------ |
@@ -208,7 +208,7 @@
 
 
 
-## v-x-scroll 滚动条
+## mo-x-scroll 滚动条
 
 | 参数     | 说明                           | 类型   | 可选值 | 默认值       |
 | -------- | ------------------------------ | ------ | ------ | ------------ |
