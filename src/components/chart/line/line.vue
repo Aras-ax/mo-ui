@@ -21,7 +21,7 @@
         stroke-width="1.5"
         fill="none"
       ></path>
-      <template v-if="showPoint">
+      <template v-if="showPoint && animatePercent === 1">
         <circle
           v-for="circle in points[i]"
           :key="circle.x"
@@ -86,14 +86,17 @@ import ChartBase from "../chart-base.vue";
 import mixin, { BarLineMixin, ChartProps } from "../chart-mixins";
 import { BezierCurve } from "../chart-lib";
 import { TIP_OFFSET_TOP, TIP_OFFSET_HORIZONTAL } from "../chart-lib";
+import tween from "../../easing-function";
 
 export default {
   name: "mo-chart-line",
   mixins: [mixin, BarLineMixin, ChartProps],
   data() {
     this.axis = {};
+    this.oldPoints = [];
     return {
       lineList: [],
+      animatePercent: this.animation ? 0 : 1,
       points: [],
       tipIndex: -1,
       hoverX: 0,
@@ -147,6 +150,49 @@ export default {
         this.hoverX =
           xStart + val * xLabelWidth + (this.isOffset ? xLabelWidth / 2 : 0);
       }
+    },
+    points(val) {
+      if (!this.animation) {
+        let list = [];
+        val.forEach(points => {
+          list.push({
+            d: this.getPath(points),
+            legend: points[0].legend
+          });
+        });
+        this.lineList.splice(0, this.lineList.length, ...list);
+        return;
+      }
+
+      this.animatePercent = 0;
+      tween(
+        0,
+        1,
+        state => {
+          let list = [],
+            oldPoints = this.oldPoints;
+          val.forEach(item => {
+            let oldItem = oldPoints[item[0].legend] || [];
+            let points = [];
+            item.forEach((point, j) => {
+              let oldPoint = oldItem[j] || { y: this.axis.yEnd };
+              points.push({
+                x: point.x,
+                y: oldPoint.y + state * (point.y - oldPoint.y)
+              });
+            });
+            list.push({
+              d: this.getPath(points),
+              legend: item[0].legend
+            });
+          });
+          this.lineList.splice(0, this.lineList.length, ...list);
+        },
+        500,
+        "easeOutCubic"
+      ).then(() => {
+        this.animatePercent = 1;
+      });
     }
   },
   components: { ChartBase },
@@ -156,37 +202,48 @@ export default {
       this.draw();
     },
     draw() {
-      this.lineList.splice(0);
-      this.points.splice(0);
+      let pointList = [];
       let { xLabelWidth, xStart, yStart, range, min, yHeight } = this.axis;
+      this.cachePoints();
       this.$refs.chartbase.chartSeries.forEach(item => {
         let offset = xStart + (this.isOffset ? xLabelWidth / 2 : 0),
-          d = `M${offset}`,
           points = [];
 
         item.data.forEach((data, j) => {
           let y = Math.floor(yStart + yHeight * (1 - (data - min) / range));
 
-          if (j === 0) {
-            d += ` ${y}`;
-          } else {
+          if (j !== 0) {
             offset += xLabelWidth;
-            d += ` L${offset} ${y}`;
           }
           points.push({ x: offset, y, data, legend: item.name });
         });
-        this.points.push(points);
-        // 绘制曲线
-        if (this.type == 2) {
-          d = this.getPath(points);
-        }
-        this.lineList.push({
-          d: d,
-          legend: item.name
-        });
+        pointList.push(points);
       });
+      this.points.splice(0, this.points.length, ...pointList);
+    },
+    cachePoints() {
+      let oldPoints = this.points.slice(0);
+      let res = {};
+      oldPoints.forEach(points => {
+        res[points[0].legend] = points;
+      });
+      this.oldPoints = res;
     },
     getPath(points) {
+      if (this.type === 2) {
+        return this.getBezierPath(points);
+      }
+      let d = "";
+      points.forEach((point, i) => {
+        if (i === 0) {
+          d += `M${point.x} ${point.y}`;
+        } else {
+          d += ` L${point.x} ${point.y}`;
+        }
+      });
+      return d;
+    },
+    getBezierPath(points) {
       let cps = [];
       for (var i = 0; i < points.length - 2; i += 1) {
         cps = cps.concat(

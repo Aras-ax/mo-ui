@@ -5,44 +5,74 @@
       :height="renderHeight"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <!-- title部分 -->
       <text name="title" x="0" :y="titleY" v-if="title" class="mo-chart__title">
         {{ title }}
       </text>
+      <!-- 饼图部分 -->
       <g name="pie">
-        <path
-          stroke="#fff"
-          stroke-width="3"
-          v-for="path in paths"
-          :key="path.start"
-          :d="
-            `M${path.start} A ${path.r} ${path.r}, 0, ${
-              path.percent > 0.5 ? 1 : 0
-            }, 1, ${path.end} L ${center.x} ${center.y} Z`
+        <template
+          v-if="
+            animateSectors.length === 1 &&
+              Math.abs(animateSectors[0].start.x - animateSectors[0].end.x) < 1
           "
-          :fill="path.fill"
-        />
-      </g>
-      <g name="lines">
-        <g v-for="point in points" :key="point.name" :name="point.name">
+        >
+          <circle
+            :cx="center.x"
+            :cy="center.y"
+            :r="animateSectors[0].r"
+            stroke-width="3"
+            stroke="#fff"
+            :fill="animateSectors[0].fill"
+          ></circle>
+        </template>
+        <template v-else>
           <path
+            stroke="#fff"
+            stroke-width="3"
+            v-for="path in animateSectors"
+            :key="path.name"
             :d="
-              `M${point.start.x} ${point.start.y} Q${point.center.x} ${point.center.y}, ${point.end.x} ${point.end.y}`
+              `M${path.start.x} ${path.start.y} A ${path.r} ${path.r}, 0, ${
+                path.percent > 0.5 ? 1 : 0
+              }, 1, ${path.end.x} ${path.end.y} L ${center.x} ${center.y} Z`
             "
-            :stroke="point.stroke"
-            stroke-width="1.5"
-            fill="none"
-          ></path>
-          <text
-            :x="point.end.x + (point.isLeft ? -4 : 4)"
-            :y="point.end.y + 6"
-            :fill="point.stroke"
-            :text-anchor="point.isLeft ? 'end' : 'start'"
-            font-size="12"
-          >
-            {{ point.percent | percent }}
-          </text>
-        </g>
+            :fill="path.fill"
+          />
+        </template>
+        <circle
+          v-if="center.r > 0"
+          :cx="center.x"
+          :cy="center.y"
+          :r="center.r - cfg.circleWidth"
+          fill="#fff"
+        ></circle>
       </g>
+      <!-- 每个扇形的描述信息 -->
+      <transition name="fade">
+        <g name="lines" v-if="showDesc">
+          <g v-for="point in points" :key="point.name" :name="point.name">
+            <path
+              :d="
+                `M${point.start.x} ${point.start.y} Q${point.center.x} ${point.center.y}, ${point.end.x} ${point.end.y}`
+              "
+              :stroke="point.stroke"
+              stroke-width="1.5"
+              fill="none"
+            ></path>
+            <text
+              :x="point.end.x + (point.isLeft ? -4 : 4)"
+              :y="point.end.y + 6"
+              :fill="point.stroke"
+              :text-anchor="point.isLeft ? 'end' : 'start'"
+              font-size="12"
+            >
+              {{ point.percent | percent }}
+            </text>
+          </g>
+        </g>
+      </transition>
+      <!-- 底部备注信息 -->
       <text
         name="comment"
         x="100%"
@@ -53,8 +83,7 @@
       >
         {{ comment }}
       </text>
-
-      <!-- <transition name="fade"> -->
+      <!-- 鼠标悬浮突出块扇形圆环 -->
       <g v-if="showTip && tipIndex > -1">
         <path
           stroke="#fff"
@@ -77,7 +106,6 @@
           fill="#fff"
         />
       </g>
-      <!-- </transition> -->
     </svg>
     <!-- legends -->
     <mo-chart-legend
@@ -87,7 +115,7 @@
       :hideLegends="hideLegends"
       @change="change"
     ></mo-chart-legend>
-    <!-- tool tip -->
+    <!-- 鼠标悬浮提示信息 -->
     <transition name="fade">
       <div
         class="mo-chart__tip"
@@ -112,6 +140,7 @@ import MoChartLegend from "../legend.vue";
 import mixin, { ChartProps } from "../chart-mixins";
 import { CHARTBASE_CONFIG } from "../chart-lib";
 import { SvgHandle } from "../axis";
+import tween from "../../easing-function";
 
 const DESC_OFFSET = 16;
 
@@ -133,10 +162,14 @@ export default {
       circleWidth: 18,
       offset: 4
     };
+    this.oldSectors = [];
     return {
       paths: [],
+      animateSectors: [],
       points: [],
+      tipArc: [],
       hideLegends: {},
+      showDesc: false,
       tipIndex: -1,
       tip: {
         x: 0,
@@ -182,35 +215,50 @@ export default {
         obj[item] = this.colors[i % l];
         return obj;
       }, {});
-    },
-    tipArc() {
+    }
+  },
+  watch: {
+    tipIndex() {
       if (this.tipIndex === -1) {
         return;
       }
+
       let { x, y, r } = this.center;
       let { circleWidth, offset } = this.cfg;
       let { percent, endPercent, stroke } = this.points[this.tipIndex];
-      return [
-        {
-          start: `${x +
-            (r + offset - circleWidth) * this.sin(endPercent - percent)} ${y -
-            (r + offset - circleWidth) * this.cos(endPercent - percent)}`,
-          end: `${x + (r + offset - circleWidth) * this.sin(endPercent)} ${y -
-            (r + offset - circleWidth) * this.cos(endPercent)}`,
-          r: r + offset - circleWidth,
-          fill: stroke,
-          percent: percent
+
+      tween(
+        0,
+        1,
+        state => {
+          let r1 = r + (offset - circleWidth) * state;
+          let r2 = r + offset * state;
+          let res = [
+            {
+              start: `${x + r1 * this.sin(endPercent - percent)} ${y -
+                r1 * this.cos(endPercent - percent)}`,
+              end: `${x + r1 * this.sin(endPercent)} ${y -
+                r1 * this.cos(endPercent)}`,
+              r: r1,
+              fill: stroke,
+              percent: percent
+            },
+            {
+              start: `${x + r2 * this.sin(endPercent - percent)} ${y -
+                r2 * this.cos(endPercent - percent)}`,
+              end: `${x + r2 * this.sin(endPercent)} ${y -
+                r2 * this.cos(endPercent)}`,
+              r: r2,
+              fill: stroke,
+              percent: percent
+            }
+          ];
+
+          this.tipArc.splice(0, this.tipArc.length, ...res);
         },
-        {
-          start: `${x + (r + offset) * this.sin(endPercent - percent)} ${y -
-            (r + offset) * this.cos(endPercent - percent)}`,
-          end: `${x + (r + offset) * this.sin(endPercent)} ${y -
-            (r + offset) * this.cos(endPercent)}`,
-          r: r + offset,
-          fill: stroke,
-          percent: percent
-        }
-      ];
+        500,
+        "easeOutElastic"
+      );
     }
   },
   filters: {
@@ -248,46 +296,79 @@ export default {
       this.renderHeight = this.height || this.$el.parentNode.clientWidth;
       this.calculate();
       this.circleAndRadius();
+      this.showDesc = false;
+      this.animatePie().then(() => {
+        this.getPoints();
+        this.showDesc = true;
+      });
+    },
+    animatePie() {
+      if (!this.animation) {
+        this.animateSectors.splice(
+          0,
+          this.animateSectors.length,
+          ...this.geteSectors(1)
+        );
+        return Promise.resolve();
+      }
 
-      this.paths.splice(0);
-      let points = [];
+      return tween(0, 1, state => {
+        let paths = this.geteSectors(state);
+        this.animateSectors.splice(0, this.animateSectors.length, ...paths);
+      });
+    },
+    geteSectors(state) {
+      let paths = [],
+        oldSectors = this.oldSectors;
       // 圆上点坐标，起始方向为Y轴正方向，角度为a
       // x = 圆心横坐标x + r * sin(a)
       // y = 圆心Y坐标 - r * cos(a)
       let { x, y, r } = this.center;
-      let circleWidth = this.cfg.circleWidth;
-      let start = `${x} ${y - r}`,
-        startInner = `${x} ${y - r + circleWidth}`,
+      let start = { x, y: y - r },
+        per = 0,
+        isRemove = oldSectors.length > this.showCates.length,
+        index = 0;
+      this.showCates.forEach(name => {
+        let { percent } = this.dataObject[name];
+        let oldSector = oldSectors[index++];
+        while (isRemove && oldSector && oldSector.name !== name) {
+          per += oldSector.percent * (1 - state);
+          start = {
+            x: x + r * this.sin(per),
+            y: y - r * this.cos(per)
+          };
+          oldSector = oldSectors[index++];
+        }
+        if (oldSector && oldSector.name === name) {
+          percent = oldSector.percent + state * (percent - oldSector.percent);
+        } else {
+          index--;
+          percent = percent * state;
+        }
+        per += percent;
+        // 扇形
+        let end = {
+          x: x + r * this.sin(per),
+          y: y - r * this.cos(per)
+        };
+        paths.push({
+          start,
+          end,
+          name,
+          r,
+          fill: this.legendColor[name],
+          percent: percent
+        });
+        start = end;
+      });
+      return paths;
+    },
+    getPoints() {
+      let points = [],
         per = 0;
       this.showCates.forEach(name => {
         let { data, percent } = this.dataObject[name];
         per += percent;
-        // 大扇形
-        let end = `${x + r * this.sin(per)} ${y - r * this.cos(per)}`;
-        this.paths.push({
-          start,
-          end,
-          // value: data,
-          // name,
-          r,
-          fill: this.legendColor[name],
-          percent
-        });
-        start = end;
-        // 小扇形
-        let endInner = `${x + (r - circleWidth) * this.sin(per)} ${y -
-          (r - circleWidth) * this.cos(per)}`;
-        this.paths.push({
-          start: startInner,
-          end: endInner,
-          // value: data,
-          // name,
-          r: r - circleWidth,
-          fill: "#fff",
-          percent
-        });
-        startInner = endInner;
-        // 描述信息
         points.push(this.locateDesc(data, percent, per, name));
       });
       this.correctLocate(points);
@@ -355,6 +436,9 @@ export default {
      * 同方向位置修正
      */
     correctPoint(points) {
+      if (points.length <= 1) {
+        return;
+      }
       let { x, y, r } = this.center;
       let fontHeight = this.svgHeight - 2,
         offset = 0,
@@ -450,8 +534,14 @@ export default {
 
     change(item) {
       this.$set(this.hideLegends, item, !this.hideLegends[item]);
+      this.cacheSectors();
       this.refresh(item);
     },
+
+    cacheSectors() {
+      this.oldSectors = this.animateSectors.slice();
+    },
+
     hover(e) {
       if (!this.showTip) {
         return;
@@ -495,10 +585,12 @@ export default {
         }
       }
     },
+
     leave() {
       this.tipIndex = -1;
       this.containerOffset = null;
     },
+
     getContainerOffset() {
       if (this.containerOffset) {
         return this.containerOffset;

@@ -16,7 +16,7 @@
   >
     <g name="bar">
       <rect
-        v-for="(t, i) in barList"
+        v-for="(t, i) in animateBarList"
         :key="i"
         :x="t.x"
         :y="t.y"
@@ -27,7 +27,8 @@
         stroke-width="0"
       ></rect>
     </g>
-    <g name="value" v-if="showValue">
+    <!-- <transition name="fade"> -->
+    <g name="value" v-if="showValue && animatePercent === 1">
       <text
         v-for="(t, i) in barList"
         :x="t.x + t.width / 2"
@@ -39,6 +40,7 @@
         >{{ t.value | format }}
       </text>
     </g>
+    <!-- </transition> -->
 
     <transition name="fade">
       <rect
@@ -80,6 +82,7 @@ import {
   TIP_OFFSET_HORIZONTAL,
   BAR_CONFIG
 } from "../chart-lib";
+import tween from "../../easing-function";
 
 export default {
   name: "mo-chart-bar",
@@ -92,9 +95,12 @@ export default {
   },
   data() {
     this.axis = {};
+    this.oldBars = {};
 
     return {
+      animatePercent: this.animation ? 0 : 1,
       barList: [],
+      animateBarList: [],
       barCfg: {
         offset: 0,
         barWidth: 0
@@ -117,6 +123,72 @@ export default {
         return data | 0;
       }
       return data.toFixed(2);
+    }
+  },
+  watch: {
+    barList(barList) {
+      if (!this.animation) {
+        this.animateBarList.splice(0, this.animateBarList.length, ...barList);
+        return;
+      }
+
+      this.animatePercent = 0;
+      let remove = false;
+      tween(
+        0,
+        1,
+        state => {
+          let list = [],
+            oldBars = this.oldBars,
+            cloneOldBars = Object.assign({}, oldBars);
+          barList.forEach(bar => {
+            let key = `${bar.legend}-${bar.category}`;
+            let oldBar = oldBars[key];
+            list.push(
+              Object.assign(
+                {},
+                bar,
+                oldBar
+                  ? {
+                      x: oldBar.x + state * (bar.x - oldBar.x),
+                      y: oldBar.y + state * (bar.y - oldBar.y),
+                      width: oldBar.width + state * (bar.width - oldBar.width),
+                      height:
+                        oldBar.height + state * (bar.height - oldBar.height)
+                    }
+                  : {
+                      x: bar.x,
+                      y: bar.y + (1 - state) * bar.height,
+                      width: state * bar.width,
+                      height: state * bar.height
+                    }
+              )
+            );
+            if (oldBar) {
+              delete cloneOldBars[key];
+            }
+          });
+          for (let key in cloneOldBars) {
+            remove = true;
+            let oldBar = oldBars[key];
+            list.unshift(
+              Object.assign({}, oldBar, {
+                x: oldBar.x + (state * oldBar.width) / 2,
+                y: oldBar.y + state * oldBar.height,
+                width: (1 - state) * oldBar.width,
+                height: (1 - state) * oldBar.height
+              })
+            );
+          }
+
+          this.animateBarList.splice(0, this.animateBarList.length, ...list);
+        },
+        500,
+        "easeOutCubic"
+      ).then(() => {
+        this.animatePercent = 1;
+        remove && this.animateBarList.splice(0, this.categories.length);
+      });
     }
   },
   computed: {
@@ -145,13 +217,13 @@ export default {
       this.draw();
     },
     draw() {
-      this.barList.splice(0);
       this.getBarWidth();
       let { categories, axis, barCfg } = this;
       let { xLabelWidth, xStart, yEnd } = axis;
 
       let list = [],
         seriesLen = this.$refs.chartbase.chartSeries.length;
+      this.cacheBar();
 
       this.$refs.chartbase.chartSeries.forEach((item, i) => {
         item.data.forEach((data, j) => {
@@ -171,7 +243,14 @@ export default {
           };
         });
       });
-      this.barList.splice(0, 0, ...list);
+      this.barList.splice(0, this.barList.length, ...list);
+    },
+    cacheBar() {
+      let res = {};
+      this.barList.forEach(item => {
+        res[`${item.legend}-${item.category}`] = item;
+      });
+      this.oldBars = res;
     },
     getBarWidth() {
       let { xLabelWidth } = this.axis;

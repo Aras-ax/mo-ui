@@ -22,7 +22,6 @@
       }}</span>
     </label>
     <label class="mo-chart__legends__slide" v-if="showArrow" @click="toogle">
-      <!-- <i :class="['icon v-icon-up', { active: active }]"></i> -->
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

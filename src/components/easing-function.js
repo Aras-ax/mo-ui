@@ -236,7 +236,13 @@ const animate =
  * @param {string} easingFunc 缓动函数
  * @param {function} cb 回调函数
  */
-export default function tween(start, end, during, easingFunc, cb) {
+export default function tween(
+  start,
+  end,
+  cb,
+  during = 500,
+  easingFunc = "linear"
+) {
   const value = end - start;
   const count = during / updateTime;
 
@@ -245,8 +251,7 @@ export default function tween(start, end, during, easingFunc, cb) {
   return new Promise(resolve => {
     function step() {
       i++;
-      let state =
-        start + value * (easing[easingFunc] || easing["linear"])(i / count);
+      let state = start + value * easing[easingFunc](i / count);
       cb(state);
       if (i < count) {
         animate(step);

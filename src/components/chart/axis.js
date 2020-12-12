@@ -511,7 +511,7 @@ export class SvgHandle {
    * 移除svg
    */
   uninstall() {
-    if (svgTarget) {
+    if (this.svgNode && this.svgNode.parentNode) {
       this.svgNode.parentNode.removeChild(this.svgNode);
     }
     svgTarget = null;

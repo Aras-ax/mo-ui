@@ -89,56 +89,13 @@
       <mo-row :gutter="4">
         <mo-col :span="12">
           <mo-chart-pie
+            :animation="false"
             class="border"
             title="图表标题"
             comment="注：数据为后台监测数据"
             :height="300"
-            :series="[
-              5,
-              5,
-              5,
-              5,
-              30,
-              5,
-              5,
-              5,
-              5,
-              50,
-              5,
-              5,
-              35,
-              5,
-              5,
-              5,
-              5,
-              5,
-              5,
-              5,
-              5
-            ]"
-            :categories="[
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              20
-            ]"
+            :series="[720, 901, 634, 990, 1030]"
+            :categories="['Jim', 'Lucy', 'Lily', 'Adele', 'N>ovak']"
           ></mo-chart-pie>
         </mo-col>
         <mo-col :span="12">

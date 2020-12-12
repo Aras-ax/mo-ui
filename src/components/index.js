@@ -10,8 +10,19 @@ import { XScroll } from "./scroll";
 import Bar from "./chart/bar";
 import Line from "./chart/line";
 import Pie from "./chart/pie";
+import Percent from "./chart/percent";
 
-const components = [Collapse, Row, Col, Scroll, XScroll, Bar, Line, Pie];
+const components = [
+  Collapse,
+  Row,
+  Col,
+  Scroll,
+  XScroll,
+  Bar,
+  Line,
+  Pie,
+  Percent
+];
 
 const install = function(Vue) {
   window.Vue = Vue;
