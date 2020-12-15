@@ -33,7 +33,7 @@
       </template>
     </g>
     <transition name="fade">
-      <g v-if="showTip && tipIndex > -1">
+      <g v-if="tipIndex > -1">
         <line
           :x1="hoverX"
           :y1="axis.yStart"
@@ -63,6 +63,7 @@
           v-if="showTip && tipIndex > -1"
           :style="tipStyle"
         >
+          <div v-if="tipText">{{ tipText }}</div>
           <div>{{ categories[tipIndex] }}</div>
           <div
             class="mo-chart__tip__data"
@@ -96,7 +97,7 @@ export default {
     this.oldPoints = [];
     return {
       lineList: [],
-      animatePercent: this.animation ? 0 : 1,
+      animatePercent: this.hasAnimation ? 0 : 1,
       points: [],
       tipIndex: -1,
       hoverX: 0,
@@ -152,7 +153,7 @@ export default {
       }
     },
     points(val) {
-      if (!this.animation) {
+      if (!this.hasAnimation) {
         let list = [];
         val.forEach(points => {
           list.push({
@@ -189,7 +190,7 @@ export default {
           this.lineList.splice(0, this.lineList.length, ...list);
         },
         500,
-        "easeOutCubic"
+        this.animation
       ).then(() => {
         this.animatePercent = 1;
       });
@@ -260,10 +261,6 @@ export default {
       return BezierCurve.drawCurvedPath(cps, points);
     },
     hover(e) {
-      if (!this.showTip) {
-        return;
-      }
-
       let offset = this.getContainerOffset();
       let { xStart, xEnd, yStart, yEnd, xLabelWidth } = this.axis;
       let x = e.pageX - offset.x;
@@ -275,7 +272,7 @@ export default {
       }
 
       let i = 0,
-        offsetPercent = 1 - (this.isOffset ? 0.5 : 1);
+        offsetPercent = 1 - (this.isOffset ? 0 : 0.5);
       x -= xStart;
       this.tipY = y;
 

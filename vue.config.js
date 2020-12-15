@@ -9,7 +9,7 @@ module.exports = {
   pages: {
     index: {
       entry: "src/main.js",
-      title: "mo-chart"
+      title: "mo-ui vue2.x PC组件库"
     }
   },
   outputDir: "docs",

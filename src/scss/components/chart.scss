@@ -82,6 +82,10 @@
       padding: 4px;
       font-size: 0;
       margin-right: 6px;
+      display: inline-block;
+      &.circle {
+        border-radius: 50%;
+      }
     }
 
     &:first-child {

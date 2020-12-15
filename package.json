@@ -8,10 +8,10 @@
     "component": "webpack --env.NODE_ENV=publish --color --config build/webpack.component.js --mode production",
     "scss": "webpack --env.NODE_ENV=publish --color --config build/webpack.scss.js --mode production",
     "build": "vue-cli-service build",
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "demo:build": "cross-env NODE_ENV=production webpack --config build/webpack.demo.js",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js"
+    "build:demo": "cross-env NODE_ENV=production webpack --config build/webpack.demo.js",
+    "serve": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js"
   },
   "dependencies": {
     "core-js": "^3.6.4",
@@ -57,6 +57,7 @@
   "keywords": [
     "chart",
     "vue",
+    "ui",
     "bar",
     "line"
   ],

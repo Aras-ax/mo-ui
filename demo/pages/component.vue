@@ -2,7 +2,7 @@
   <div class="page page-container">
     <nav class="page-nav">
       <mo-scroll>
-        <side-nav :data="navsData" :base="`/component/`"></side-nav>
+        <side-nav class="nav-scroll" :data="navsData" :base="`/component/`"></side-nav>
       </mo-scroll>
     </nav>
     <section class="page-content">
@@ -29,27 +29,27 @@ $nav-width: 256px;
 
 .page {
   padding-left: $nav-width;
-  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
 
   .page-nav {
     width: $nav-width;
-    height: 100%;
-    overflow-y: auto;
     position: fixed;
     bottom: 0;
     top: $header-height;
     left: 0;
     z-index: 1;
-    padding-left: 24px;
-    padding-top: 24px;
   }
 
   .page-content {
     padding-left: 64px;
     padding-right: 24px;
     max-width: 1000px;
+  }
+
+  .nav-scroll {
+    padding-left: 24px;
+    padding-top: 24px;
   }
 }
 

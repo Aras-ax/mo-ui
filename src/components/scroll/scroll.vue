@@ -1,10 +1,7 @@
 <template>
-  <div
-    class="mo-scroll"
-    :style="{ maxHeight: wrapHeight + 'px', maxWidth: wrapWidth + 'px' }"
-  >
+  <div class="mo-scroll" :style="scrollStyle">
     <!-- 滚动条体 -->
-    <div ref="view" class="mo-scroll__wrap" :style="style" @scroll="scroll">
+    <div ref="view" class="mo-scroll__wrap" :style="wrapStyle" @scroll="scroll">
       <slot></slot>
     </div>
     <!-- 垂直滚动条 -->
@@ -37,8 +34,14 @@ export default {
   props: {
     // 内容区域高
     height: {
-      type: Number,
-      default: 0
+      type: [Number, String],
+      default: "inherit",
+      validator(val) {
+        if (typeof val === "number") {
+          return true;
+        }
+        return ["inherit", "auto"].indexOf(val) !== -1;
+      }
     },
     // 内容区域宽
     width: {
@@ -59,6 +62,17 @@ export default {
     toIndex: {
       type: Number,
       default: 0
+    },
+    overflow: {
+      type: String,
+      default: "auto",
+      validator(val) {
+        return ["x", "y", "auto", "hidden"].indexOf(val) !== -1;
+      }
+    },
+    isBlock: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -92,17 +106,41 @@ export default {
     view() {
       return this.$refs.view;
     },
-    style() {
-      let res = {};
-
-      if (this.isVertical || this.isHorizontal) {
-        res.height = `${this.wrapHeight + this.barWidth}px`;
-        res.width = `${this.wrapWidth + this.barWidth}px`;
-        res.overflow = "scroll";
-      } else {
-        res.overflow = "hidden";
+    scrollStyle() {
+      let res = {
+        // maxHeight: `${this.wrapHeight}px`,
+        display: this.isBlock ? "block" : "inline-block"
+      };
+      if ((this.width || this.isHorizontal) && this.wrapWidth) {
+        res.maxWidth = `${this.wrapWidth}px`;
       }
+      if ((this.height || this.isVertical) && this.wrapHeight) {
+        res.maxHeight = `${this.wrapHeight}px`;
+      }
+
       return res;
+    },
+    wrapStyle() {
+      let wrapStyle = {};
+      if (this.isVertical) {
+        wrapStyle["overflow-y"] = "scroll";
+        wrapStyle["margin-right"] = `-${this.barWidth}px`;
+      } else {
+        wrapStyle["overflow-y"] = "hidden";
+      }
+
+      if (this.isHorizontal) {
+        if (this.wrapHeight) {
+          wrapStyle.height = `${this.wrapHeight + this.barWidth}px`;
+        }
+        wrapStyle["overflow-x"] = "scroll";
+      } else {
+        if (this.wrapHeight) {
+          wrapStyle.height = `${this.wrapHeight}px`;
+        }
+        wrapStyle["overflow-x"] = "hidden";
+      }
+      return wrapStyle;
     }
   },
   components: {
@@ -117,6 +155,7 @@ export default {
       let target =
         this.$el.querySelector(selector) || document.querySelector(selector);
       if (target === null) {
+        // eslint-disable-next-line
         console.warn(`selector[${selector}]无效`);
         return;
       }
@@ -169,11 +208,11 @@ export default {
       this.wrapWidth = width;
       this.view.scrollTop = this.scrollTop = 0;
       this.view.scrollLeft = this.scrollLeft = 0;
+      this.isVertical = false;
+      this.isHorizontal = false;
       this.update();
-      this.$nextTick(() => {
-        this.$refs.xbar && this.$refs.xbar.update();
-        this.$refs.ybar && this.$refs.ybar.update();
-      });
+
+      this.$emit("mounted");
     },
     /**
      * 更新滚动条相关配置
@@ -182,13 +221,19 @@ export default {
     update() {
       let width = this.view.scrollWidth;
       let height = this.view.scrollHeight;
-      this.isHorizontal = this.wrapWidth < width;
-      this.isVertical = this.wrapHeight < height;
+      this.isVertical = this.overflow === "auto" || this.overflow === "y";
+      this.isHorizontal = this.overflow === "auto" || this.overflow === "x";
+      this.isHorizontal = this.isHorizontal && this.wrapWidth < width;
+      this.isVertical = this.isVertical && this.wrapHeight < height;
 
       if (this.isHorizontal) {
         this.hBarWidth = parseInt((this.wrapWidth / width) * this.wrapWidth);
         this.scrollLeftRange = width - this.wrapWidth;
         this.scrollSize.width = this.wrapWidth;
+      } else {
+        this.hBarWidth = 0;
+        this.scrollLeftRange = 0;
+        this.scrollSize.width = 0;
       }
 
       if (this.isVertical) {
@@ -197,6 +242,10 @@ export default {
         );
         this.scrollTopRange = height - this.wrapHeight;
         this.scrollSize.height = this.wrapHeight;
+      } else {
+        this.vbarHeight = 0;
+        this.scrollTopRange = 0;
+        this.scrollSize.height = 0;
       }
     },
     /**
@@ -226,18 +275,36 @@ export default {
       if (this.toX) {
         this.scrollToX(this.toX);
       }
+    },
+    resizeHandle() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+      this.timer = setTimeout(() => {
+        this.update();
+      }, 100);
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.wrapWidth = this.width || this.$el.parentNode.offsetWidth;
-      this.wrapHeight = this.height || this.$el.parentNode.offsetHeight;
-      this.update();
+    this.wrapWidth = this.width || this.$el.parentNode.offsetWidth;
+    if (this.height === "inherit") {
+      this.wrapHeight = this.$el.parentNode.offsetHeight;
+    } else if (this.height === "auto") {
+      this.wrapHeight = 0;
+    } else {
+      this.wrapHeight = this.height;
+    }
 
-      this.$nextTick(() => {
-        this.emitProps();
-      });
-    });
+    this.isHorizontal = this.overflow === "auto" || this.overflow === "x";
+    this.isVertical = this.overflow === "auto" || this.overflow === "y";
+    this.update();
+    window.addEventListener("resize", this.resizeHandle);
+
+    this.emitProps();
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.resizeHandle);
   }
 };
 </script>

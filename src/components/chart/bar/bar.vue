@@ -44,7 +44,8 @@
 
     <transition name="fade">
       <rect
-        v-if="showTip && tipIndex > -1"
+        name="tip-shadow"
+        v-if="tipIndex > -1"
         :x="shadowX"
         :y="axis.yStart"
         :width="shadowWidth"
@@ -60,6 +61,7 @@
           v-if="showTip && tipIndex > -1"
           :style="tipStyle"
         >
+          <div v-if="tipText">{{ tipText }}</div>
           <div>{{ barList[tipIndex].legend }}</div>
           <div class="mo-chart__tip__data">
             <i
@@ -98,7 +100,7 @@ export default {
     this.oldBars = {};
 
     return {
-      animatePercent: this.animation ? 0 : 1,
+      animatePercent: this.hasAnimation ? 0 : 1,
       barList: [],
       animateBarList: [],
       barCfg: {
@@ -127,7 +129,7 @@ export default {
   },
   watch: {
     barList(barList) {
-      if (!this.animation) {
+      if (!this.hasAnimation) {
         this.animateBarList.splice(0, this.animateBarList.length, ...barList);
         return;
       }
@@ -184,7 +186,7 @@ export default {
           this.animateBarList.splice(0, this.animateBarList.length, ...list);
         },
         500,
-        "easeOutCubic"
+        this.animation
       ).then(() => {
         this.animatePercent = 1;
         remove && this.animateBarList.splice(0, this.categories.length);
@@ -280,10 +282,6 @@ export default {
       });
     },
     hover(e) {
-      if (!this.showTip) {
-        return;
-      }
-
       let { xStart, xEnd, yStart, yEnd, xLabelWidth } = this.axis;
       let offset = this.getContainerOffset();
       let x = e.pageX - offset.x;

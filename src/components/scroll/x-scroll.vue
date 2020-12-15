@@ -1,11 +1,13 @@
 <template>
   <mo-scroll
     ref="scroll"
-    :height="height"
     :width="width"
     :toX="toX"
     :toY="toY"
     :toIndex="toIndex"
+    :overflow="overflow"
+    :isBlock="isBlock"
+    @mounted="setPosition"
   >
     <slot></slot>
   </mo-scroll>
@@ -15,10 +17,6 @@
 export default {
   name: "v-x-scroll",
   props: {
-    height: {
-      type: Number,
-      default: 0
-    },
     width: {
       type: Number,
       default: 0
@@ -38,6 +36,17 @@ export default {
     count: {
       type: Number,
       default: 5
+    },
+    overflow: {
+      type: String,
+      default: "auto",
+      validator(val) {
+        return ["x", "y", "auto", "hidden"].indexOf(val) !== -1;
+      }
+    },
+    isBlock: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -57,7 +66,9 @@ export default {
         if (node) {
           let height = node.children[0].offsetHeight;
           let maxHeight = height;
-          for (let i = 1; i < this.count; i++) {
+          let childrenLen = node.children.length;
+          let count = this.count > childrenLen ? childrenLen : this.count;
+          for (let i = 1; i < count; i++) {
             if (node.children[i]) {
               maxHeight += node.children[0].offsetHeight;
             } else {
@@ -67,6 +78,12 @@ export default {
           this.scroll.setSize(maxHeight, this.width);
         }
       }
+    },
+    scrollToIndex(index) {
+      this.$refs.scroll.scrollToIndex(index);
+    },
+    setPosition(position) {
+      this.$emit("mounted", position);
     }
   },
   mounted() {

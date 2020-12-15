@@ -31,7 +31,7 @@ router.afterEach(() => {
 });
 
 new Vue({
-  // eslint-disable-line
+  // eslint-disable-next-line
   render: h => h(App),
   router
 }).$mount("#app");

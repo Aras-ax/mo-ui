@@ -50,4 +50,10 @@
       line-height: 22px;
     }
   }
+
+  &.disabled{
+    .v-collapse__header{
+      cursor: not-allowed;
+    }
+  }
 }

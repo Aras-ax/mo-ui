@@ -3,6 +3,10 @@
   cursor: pointer;
 }
 
+.disabled{
+  cursor: not-allowed;
+}
+
 *{
   box-sizing: border-box;
 }

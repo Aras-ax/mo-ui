@@ -84,7 +84,7 @@
         {{ comment }}
       </text>
       <!-- 鼠标悬浮突出块扇形圆环 -->
-      <g v-if="showTip && tipIndex > -1">
+      <g @click="click" v-if="tipIndex > -1">
         <path
           stroke="#fff"
           stroke-width="3"
@@ -110,6 +110,7 @@
     <!-- legends -->
     <mo-chart-legend
       :style="{ bottom: `${legendY}px` }"
+      :legend="legend"
       :legends="categories"
       :legendColor="legendColor"
       :hideLegends="hideLegends"
@@ -122,6 +123,7 @@
         v-if="showTip && tipIndex > -1"
         :style="{ top: tip.y + 'px', left: tip.x + 'px' }"
       >
+        <div v-if="tipText">{{ tipText }}</div>
         <div>{{ points[tipIndex].name }}</div>
         <div class="mo-chart__tip__data">
           <i
@@ -303,7 +305,7 @@ export default {
       });
     },
     animatePie() {
-      if (!this.animation) {
+      if (!this.hasAnimation) {
         this.animateSectors.splice(
           0,
           this.animateSectors.length,
@@ -312,10 +314,16 @@ export default {
         return Promise.resolve();
       }
 
-      return tween(0, 1, state => {
-        let paths = this.geteSectors(state);
-        this.animateSectors.splice(0, this.animateSectors.length, ...paths);
-      });
+      return tween(
+        0,
+        1,
+        state => {
+          let paths = this.geteSectors(state);
+          this.animateSectors.splice(0, this.animateSectors.length, ...paths);
+        },
+        500,
+        this.animation
+      );
     },
     geteSectors(state) {
       let paths = [],
@@ -528,7 +536,7 @@ export default {
       // nextTick收集同时间多次refresh一次处理
       this.$nextTick(() => {
         this.update();
-        legend && this.$emit("change", legend);
+        legend && this.$emit("legendClick", legend);
       });
     },
 
@@ -543,10 +551,19 @@ export default {
     },
 
     hover(e) {
-      if (!this.showTip) {
+      let index = this.getIndex(e);
+      if (index === -1) {
+        this.tipIndex = -1;
         return;
       }
+      this.tipIndex = index;
 
+      let offset = this.getContainerOffset();
+      this.tip.x = e.pageX - offset.x;
+      this.tip.y = e.pageY - offset.y;
+    },
+
+    getIndex(e) {
       let offset = this.getContainerOffset(),
         centerX = this.center.x,
         centerY = this.center.y,
@@ -556,12 +573,8 @@ export default {
         y = e.pageY - offset.y;
       // 不在饼图的绘制区域内则不作任何处理
       if (Math.sqrt(Math.pow(centerX - x, 2) + Math.pow(centerY - y, 2)) > r) {
-        this.tipIndex = -1;
-        return;
+        return -1;
       }
-
-      this.tip.x = x;
-      this.tip.y = y;
 
       let angel = 0;
       if (x > centerX) {
@@ -580,10 +593,23 @@ export default {
       let angelPercent = angel / Math.PI / 2;
       for (let i = 0, l = points.length; i < l; i++) {
         if (angelPercent <= points[i].endPercent) {
-          this.tipIndex = i;
-          return;
+          return i;
         }
       }
+      return points.length - 1;
+    },
+
+    click(e) {
+      let index = this.getIndex(e);
+      if (index === -1) {
+        this.tipIndex = -1;
+        return;
+      }
+
+      this.$emit("click", {
+        value: this.points[index].data,
+        category: this.points[index].name
+      });
     },
 
     leave() {

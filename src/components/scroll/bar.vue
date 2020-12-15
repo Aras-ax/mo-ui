@@ -59,6 +59,12 @@ export default {
       return style;
     }
   },
+  watch: {
+    barsize() {
+      this.size = this.$el[this.propertys.offset];
+      this.maxTranslate = this.size - this.barsize;
+    }
+  },
   methods: {
     emitChange(distance) {
       if (distance < 0) {
@@ -105,18 +111,14 @@ export default {
     },
     mouseup() {
       this.isDragging = false;
-      console.log("up");
       off(document, "mousemove", this.mousemove);
       off(document, "mouseup", this.mouseup);
       document.onselectstart = null;
-    },
-    update() {
-      this.size = this.$el[this.propertys.offset];
-      this.maxTranslate = this.size - this.barsize;
     }
   },
   mounted() {
-    this.update();
+    this.size = this.$el[this.propertys.offset];
+    this.maxTranslate = this.size - this.barsize;
   }
 };
 </script>

@@ -39,7 +39,7 @@
 | series     | 数据列            | array   |                 |        |
 | categories | 类别，对应x轴描述 | array   | -               | -      |
 | legend     | 图例              | string  | circle, square  | circle |
-| animation  | 动画效果          | boolean | -               | true   |
+| animation  | 动画效果，空表示不需要动画          | string | -               | easeOutCubic   |
 | width      | 宽，单位px           | number  | -               | 外层容器的宽 |
 | height     | 高，单位px           | number  | -               | 外层容器的高 |
 | type       | 折线类型          | number  | 1: 直线 2: 曲线 | 2     |
@@ -47,8 +47,8 @@
 | show-tip   | 鼠标悬浮显示数据  | boolean | -               | true   |
 | title      | 图表标题          | string  | -               | -      |
 | comment    | 图表注释          | string  | -               | -      |
+| is-offset  | 是否从坐标原点后面开始绘制      | boolean  | -               | true          |
 | show-point | 是否显示曲线坐标点 | boolean | - | false |
-|  |  |  |  |  |
 
 **series数据项属性**
 
@@ -61,7 +61,7 @@
 
 | 方法名      | 说明         | 参数               |
 | ----------- | ------------ | ------------------ |
-| legendClick | 图例点击事件 | 被点击的图例索引   |
+| legendClick | 图例点击事件 | 被点击的图例名称  |
 
 
 
@@ -75,7 +75,7 @@
 | series     | 数据列            | array   |                |        |
 | categories | 类别，对应x轴描述 | array   | -              | -      |
 | legend     | 图例              | string  | circle, square | circle |
-| animation  | 动画效果          | Boolean | -              | true   |
+| animation  | 动画效果，空表示不需要动画          | string | -              | easeOutCubic   |
 | width      | 宽，单位px           | number  | -              | 外层容器的宽 |
 | height     | 高，单位px           | number  | -              | 外层容器的高 |
 | tip-text   | 鼠标悬浮预留提示信息，独行显示  | string | -   | -       |
@@ -96,7 +96,7 @@
 | 方法名      | 说明         | 参数                                                         |
 | ----------- | ------------ | ------------------------------------------------------------ |
 | click       | 柱子点击事件 | { <br />value: data.value, <br />legend: data.legend, <br />category: data.category<br />} |
-| legendClick | 图例点击事件 | 被点击的图例索引                                             |
+| legendClick | 图例点击事件 | 被点击的图例名称  |
 
 
 
@@ -110,7 +110,7 @@
 | series     | 数据列         | array   |                 |        |
 | categories | 类别           | array   | -               | -      |
 | legend     | 图例           | string  | circle, square  | circle |
-| animation  | 动画效果       | Boolean | -               | true   |
+| animation  | 动画效果，空表示不需要动画       | string | -               | easeOutCubic   |
 | width      | 宽，单位px        | number  | -               | 外层容器的宽 |
 | height     | 高，单位px        | number  | -               | 外层容器的高 |
 | tip-text   | 鼠标悬浮预留提示信息，独行显示  | string | -   | -       |
@@ -124,7 +124,7 @@
 
 | 方法名      | 说明         | 参数               |
 | ----------- | ------------ | ------------------ |
-| click       | 图形点击事件 | 被点击的数据和索引 |
+| click       | 图形点击事件 | { <br />value: data.value, <br /><br />category: data.category<br />}   |
 | legendClick | 图例点击事件 | 被点击的图例       |
 
 
@@ -146,11 +146,6 @@
 | name    | 说明           |
 | ------- | -------------- |
 | default | 默认显示百分比，在圆环内或者在直线上 |
-| left | 进度条左侧内容，当type为`line`时才生效 |
-| right | 进度条右侧内容，当type为`line`时才生效 |
-| bottom | 进度条底部内容，当type为`line`时才生效 |
-
-
 
 ## mo-collapse 
 

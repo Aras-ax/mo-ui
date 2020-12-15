@@ -1,19 +1,22 @@
 <template>
-  <div class="mo-collapse border-b">
+  <div class="mo-collapse border-b" :class="{'disabled': isDisabled}">
     <div
-      class="v-collapse__header"
+      class="mo-collapse__header"
       :class="{ 'is-active': isActive }"
       @click="change(!isActive)"
     >
-      {{ title }}
+      <slot name="title" v-if="$slots.title"></slot>
+      <template v-else>
+        {{ title }}
+      </template>
       <i
-        class="v-collapse__arrow v-icon-up"
+        class="mo-collapse__arrow v-icon-up"
         :class="{ 'is-active': isActive }"
       ></i>
     </div>
     <collapse-transition>
-      <div class="v-collapse__item" v-show="isActive">
-        <div class="v-collapse__item__content">
+      <div class="mo-collapse__item" v-show="isActive">
+        <div class="mo-collapse__item__content">
           <slot>{{ text }}</slot>
         </div>
       </div>
@@ -32,12 +35,20 @@ export default {
       type: Boolean,
       default: false
     },
-    text: String
+    text: String,
+    disabled: {
+      type: [Boolean, String]
+    }
   },
   data() {
     return {
       isActive: this.actived
     };
+  },
+  computed: {
+    isDisabled() {
+      return this.disabled === true || this.disabled === "";
+    }
   },
   watch: {
     actived(value) {
@@ -53,6 +64,10 @@ export default {
   },
   methods: {
     change(val) {
+      if (this.isDisabled) {
+        return;
+      }
+
       this.isActive = val;
       this.$emit("change", val);
     }

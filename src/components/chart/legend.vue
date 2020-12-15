@@ -13,6 +13,7 @@
       @click.prevent.stop="change(item)"
     >
       <i
+        :class="legend"
         :style="{
           background: hideLegends[item] ? '#ddd' : legendColor[item]
         }"
@@ -45,6 +46,10 @@
 export default {
   name: "mo-chart-legend",
   props: {
+    legend: {
+      type: String,
+      default: "circle"
+    },
     legends: {
       type: Array,
       required: true

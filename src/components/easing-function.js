@@ -251,7 +251,8 @@ export default function tween(
   return new Promise(resolve => {
     function step() {
       i++;
-      let state = start + value * easing[easingFunc](i / count);
+      let state =
+        start + value * (easing[easingFunc] || easing["linear"])(i / count);
       cb(state);
       if (i < count) {
         animate(step);

@@ -314,5 +314,5 @@
 
 | 方法名      | 说明         | 参数               |
 | ----------- | ------------ | ------------------ |
-| click       | 图形点击事件 | { <br />value: data.value, <br /><br />category: data.category<br />}  |
+| click       | 图形点击事件 | { <br />value: data.value, <br />category: data.category<br />}  |
 | legendClick | 图例点击事件 | 被点击的图例       |

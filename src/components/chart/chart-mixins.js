@@ -53,6 +53,9 @@ export default {
   computed: {
     legends() {
       return this.series.map(item => item.name);
+    },
+    hasAnimation() {
+      return !!this.animation;
     }
   }
 };
@@ -65,8 +68,8 @@ export const ChartProps = {
     },
     tipText: String,
     animation: {
-      type: Boolean,
-      default: true
+      type: String,
+      default: "easeOutCubic"
     }
   }
 };

@@ -24,6 +24,7 @@
     <!-- legends -->
     <mo-chart-legend
       :style="{ top: `${legendY}px`, right: `3px` }"
+      :legend="legend"
       :legends="legends"
       :legendColor="legendColor"
       :hideLegends="hideLegends"

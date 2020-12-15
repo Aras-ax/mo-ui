@@ -8,6 +8,10 @@ export default [
           {
             path: "layout",
             title: "栅格布局"
+          },
+          {
+            path: "scroll",
+            title: "滚动条"
           }
         ]
       },
@@ -29,6 +33,15 @@ export default [
           {
             path: "percent",
             title: "百分比"
+          }
+        ]
+      },
+      {
+        groupName: "Other",
+        list: [
+          {
+            path: "collapse",
+            title: "折叠面板"
           }
         ]
       }

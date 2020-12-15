@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
+import router from "./views/router";
 import ReasyUiVue from "./components/index";
 import RPage from "./views/components/r-page.vue";
 import RH from "./views/components/r-h.vue";
