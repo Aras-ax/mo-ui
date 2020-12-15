@@ -1,3 +1,3 @@
 module.exports = {
-  // text: "./src/components/Text/index.js",
+  scroll: "./src/components/scroll/index.js",
 };

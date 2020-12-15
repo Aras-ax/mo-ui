@@ -293,7 +293,7 @@ export default {
     },
     update() {
       this.renderWidth = this.width || this.$el.clientWidth;
-      this.renderHeight = this.height || this.$el.parentNode.clientWidth;
+      this.renderHeight = this.height || this.$el.parentNode.clientHeight;
       this.calculate();
       this.circleAndRadius();
       this.showDesc = false;

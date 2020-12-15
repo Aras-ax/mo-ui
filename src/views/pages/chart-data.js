@@ -50,7 +50,7 @@ export const CHART_DATA_SERIES1 = [
     data: [80, 98, 134, 96, 78]
   }
 ];
-export const CHART_DATA_CATEGORIES = ["Jim", "Lucy", "Lily", "Adele", "N>ovak"];
+export const CHART_DATA_CATEGORIES = ["Jim", "Lucy", "Lily", "Adele", "Novak"];
 export const CHART_DATA_CATEGORIES_LONG = [
   "Novak Djokovic",
   "maria sharapova",

@@ -95,7 +95,7 @@ export default {
   methods: {
     calcuate() {
       this.renderWidth = this.width || this.$el.clientWidth;
-      this.renderHeight = this.height || this.$el.parentNode.clientWidth;
+      this.renderHeight = this.height || this.$el.parentNode.clientHeight;
 
       this.axis.refresh({
         offsetGridLines: this.isOffset,

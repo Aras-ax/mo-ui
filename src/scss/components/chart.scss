@@ -91,7 +91,6 @@
 }
 .mo-chart__legends {
   overflow: hidden;
-  background-color: #fff;
   transition: height 0.3s;
   &__slide {
     position: absolute;
@@ -104,6 +103,7 @@
   }
 
   .icon {
+    background-color: #fff;
     display: inline-block;
     transition: transform 0.3s;
     &.active {
