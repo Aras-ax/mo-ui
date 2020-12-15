@@ -21,6 +21,14 @@ export default [
           {
             path: "line",
             title: "折线图"
+          },
+          {
+            path: "pie",
+            title: "饼图"
+          },
+          {
+            path: "percent",
+            title: "百分比"
           }
         ]
       }

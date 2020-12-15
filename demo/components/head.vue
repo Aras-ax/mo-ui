@@ -16,7 +16,7 @@
       </svg>
       <label>陌上</label>
     </a>
-    <div class="header-text">组件开发使用文档</div>
+    <div class="header-text">MO-UI</div>
   </header>
 </template>
 
