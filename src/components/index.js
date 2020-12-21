@@ -5,7 +5,6 @@ import Collapse from "./collapse";
 import Row from "./layout";
 import Col from "./layout/colIndex";
 import Scroll from "./scroll";
-import { XScroll } from "./scroll";
 
 import Bar from "./chart/bar";
 import Line from "./chart/line";
@@ -17,7 +16,6 @@ const components = [
   Row,
   Col,
   Scroll,
-  XScroll,
   Bar,
   Line,
   Pie,
