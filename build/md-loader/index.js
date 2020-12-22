@@ -66,8 +66,9 @@ module.exports = function(source) {
   output.push(content.slice(start));
   return `
     <template>
-      <section class="content element-doc">
+      <section class="content moui-doc">
         ${output.join("")}
+        <side-link></side-link>
       </section>
     </template>
     ${pageScript}

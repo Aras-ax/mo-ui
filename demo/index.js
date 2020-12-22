@@ -7,6 +7,7 @@ import MoChart from "main/components/index";
 import demoBlock from "./components/demo-block";
 import SideNav from "./components/side-nav";
 import FooterNav from "./components/footer-nav";
+import SideLink from "./components/side-link";
 
 import "main/scss/index.scss";
 import "./demo-styles/index.scss";
@@ -16,6 +17,7 @@ Vue.use(VueRouter);
 Vue.component("demo-block", demoBlock);
 Vue.component("side-nav", SideNav);
 Vue.component("footer-nav", FooterNav);
+Vue.component("side-link", SideLink);
 
 const router = new VueRouter({
   mode: "hash",

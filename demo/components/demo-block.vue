@@ -8,7 +8,7 @@
     <div class="source">
       <slot name="source"></slot>
     </div>
-    <div class="meta" ref="meta">
+    <div v-show="showCode" class="meta" ref="meta">
       <div class="description" v-if="$slots.default">
         <slot></slot>
       </div>
@@ -17,6 +17,7 @@
       </div>
     </div>
     <div
+      v-show="showCode"
       class="demo-block-control"
       ref="control"
       :class="{ 'is-fixed': fixedControl }"
@@ -171,6 +172,13 @@
 import { stripScript, stripStyle, stripTemplate } from "../util";
 
 export default {
+  props: {
+    hide: {
+      type: [String, undefined],
+      default: undefined
+    }
+  },
+
   data() {
     return {
       codepen: {
@@ -195,8 +203,7 @@ export default {
     },
 
     removeScrollHandler() {
-      this.scrollParent &&
-        this.scrollParent.removeEventListener("scroll", this.scrollHandler);
+        window.removeEventListener("scroll", this.scrollHandler);
     }
   },
 
@@ -205,9 +212,9 @@ export default {
       return this.$route.path.split("/")[1];
     },
 
-    // langConfig() {
-    //   return compoLang.filter(config => config.lang === this.lang)[0]['demo-block'];
-    // },
+    showCode() {
+      return this.hide === undefined;
+    },
 
     blockClass() {
       return `demo-${this.lang} demo-${this.$router.currentRoute.path
@@ -249,11 +256,7 @@ export default {
         return;
       }
       setTimeout(() => {
-        this.scrollParent = document.querySelector(
-          ".page-component__scroll > .el-scrollbar__wrap"
-        );
-        this.scrollParent &&
-          this.scrollParent.addEventListener("scroll", this.scrollHandler);
+          window.addEventListener("scroll", this.scrollHandler);
         this.scrollHandler();
       }, 200);
     }

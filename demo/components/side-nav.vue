@@ -1,6 +1,6 @@
 <style lang="scss">
 .side-nav {
-  width: 100%;
+  width: 256px;
   box-sizing: border-box;
   transition: opacity 0.3s;
   &.is-fade {
@@ -119,7 +119,6 @@
     class="side-nav"
     @mouseenter="isFade = false"
     :class="{ 'is-fade': isFade }"
-    :style="navStyle"
   >
     <ul>
       <li class="nav-item" v-for="(item, key) in data" :key="key">
@@ -209,14 +208,6 @@ export default {
     }
   },
   computed: {
-    navStyle() {
-      const style = {};
-      if (this.isSmallScreen) {
-        style.paddingBottom = "60px";
-      }
-      style.opacity = this.isFade ? "0.5" : "1";
-      return style;
-    },
     lang() {
       return this.$route.meta.lang;
     }
