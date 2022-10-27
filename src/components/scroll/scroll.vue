@@ -1,9 +1,10 @@
 <template>
-  <div class="mo-scroll" :style="scrollStyle">
+  <div class="mo-scroll" :class="{ active: active }" :style="scrollStyle">
     <!-- 滚动条体 -->
     <div ref="view" class="mo-scroll__wrap" :style="wrapStyle" @scroll="scroll">
       <slot></slot>
     </div>
+    <slot name="content"></slot>
     <!-- 垂直滚动条 -->
     <bar
       ref="ybar"
@@ -11,7 +12,9 @@
       direct="y"
       :barsize="vbarHeight"
       v-model="scrollTop"
+      :sliderWidth="sliderWidth"
       @change="change"
+      :style="{ visibility: isMac ? 'hidden' : 'visible' }"
     ></bar>
     <!-- 水平滚动条 -->
     <bar
@@ -20,6 +23,8 @@
       direct="x"
       :barsize="hBarWidth"
       v-model="scrollLeft"
+      :sliderWidth="sliderWidth"
+      :style="{ visibility: isMac ? 'hidden' : 'visible' }"
       @change="change"
     ></bar>
   </div>
@@ -28,6 +33,8 @@
 <script>
 import { getScrollWidth } from "./scroll-lib.js";
 import Bar from "./bar.vue";
+import { on, off } from "../libs.js";
+import tween from "../easing-function.js";
 
 export default {
   name: "mo-scroll",
@@ -73,17 +80,33 @@ export default {
     isBlock: {
       type: Boolean,
       default: true
+    },
+    sliderWidth: {
+      type: Number,
+      default: 4
+    },
+    animate: {
+      type: Boolean,
+      default: false
+    },
+    // 滚动条一直显示
+    active: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     // 水平和垂直方向可滚动的范围
     this.scrollLeftRange = this.scrollTopRange = 1;
+    this.isMac = /macintosh|mac os x/i.test(navigator.userAgent);
     return {
       // 浏览器默认滚动条宽度
       barWidth: getScrollWidth(),
       // 滚动内容宽度
       wrapWidth: this.width,
       wrapHeight: this.height,
+      newHeight: this.height,
+      newWidth: this.width,
       // 是否有垂直滚动条
       isVertical: false,
       // 是否有水平滚动条
@@ -108,13 +131,12 @@ export default {
     },
     scrollStyle() {
       let res = {
-        // maxHeight: `${this.wrapHeight}px`,
         display: this.isBlock ? "block" : "inline-block"
       };
-      if ((this.width || this.isHorizontal) && this.wrapWidth) {
+      if ((this.newWidth || this.isHorizontal) && this.wrapWidth) {
         res.maxWidth = `${this.wrapWidth}px`;
       }
-      if ((this.height || this.isVertical) && this.wrapHeight) {
+      if ((this.newHeight || this.isVertical) && this.wrapHeight) {
         res.maxHeight = `${this.wrapHeight}px`;
       }
 
@@ -134,6 +156,7 @@ export default {
           wrapStyle.height = `${this.wrapHeight + this.barWidth}px`;
         }
         wrapStyle["overflow-x"] = "scroll";
+        wrapStyle["margin-bottom"] = `-${this.barWidth}px`;
       } else {
         if (this.wrapHeight) {
           wrapStyle.height = `${this.wrapHeight}px`;
@@ -141,6 +164,14 @@ export default {
         wrapStyle["overflow-x"] = "hidden";
       }
       return wrapStyle;
+    }
+  },
+  watch: {
+    height(val) {
+      this.setSize(val, this.width);
+    },
+    width(val) {
+      this.setSize(this.height, val);
     }
   },
   components: {
@@ -167,8 +198,27 @@ export default {
      * @param {HtmlElement} node dom节点
      */
     scrollToNode(node) {
-      this.view.scrollLeft = node.offsetLeft;
-      this.view.scrollTop = node.offsetTop;
+      if (this.animate) {
+        let startLeft = this.view.scrollLeft,
+          startTop = this.view.scrollTop,
+          endLeft = node.offsetLeft,
+          endTop = node.offsetTop;
+        let rangeLeft = endLeft - startLeft,
+          rangeTop = endTop - startTop;
+
+        tween(
+          0,
+          1,
+          state => {
+            this.view.scrollLeft = startLeft + parseInt(state * rangeLeft);
+            this.view.scrollTop = startTop + parseInt(state * rangeTop);
+          },
+          200
+        );
+      } else {
+        this.view.scrollLeft = node.offsetLeft;
+        this.view.scrollTop = node.offsetTop;
+      }
       this.scroll();
     },
     /**
@@ -176,16 +226,48 @@ export default {
      * @param {Number} x x方向的位置
      */
     scrollToX(x) {
-      this.view.scrollLeft = x;
-      this.scrollLeft = this.view.scrollLeft / this.scrollLeftRange;
+      if (this.animate) {
+        let start = this.view.scrollLeft;
+        let range = x - start;
+
+        tween(
+          0,
+          1,
+          state => {
+            let toValue = start + parseInt(state * range);
+            this.view.scrollLeft = toValue;
+            this.scrollLeft = toValue / this.scrollLeftRange;
+          },
+          200
+        );
+      } else {
+        this.view.scrollLeft = x;
+        this.scrollLeft = this.view.scrollLeft / this.scrollLeftRange;
+      }
     },
     /**
      * 垂直滚动到指定的位置
      * @param {Number} y y方向的位置
      */
     scrollToY(y) {
-      this.view.scrollTop = y;
-      this.scrollTop = this.view.scrollTop / this.scrollTopRange;
+      if (this.animate) {
+        let start = this.view.scrollTop;
+        let range = y - start;
+
+        tween(
+          0,
+          1,
+          state => {
+            let toValue = start + parseInt(state * range);
+            this.view.scrollTop = toValue;
+            this.scrollLeft = toValue / this.scrollTopRange;
+          },
+          200
+        );
+      } else {
+        this.view.scrollTop = y;
+        this.scrollTop = this.view.scrollTop / this.scrollTopRange;
+      }
     },
     /**
      * 滚动到第几个元素
@@ -199,54 +281,139 @@ export default {
       }
     },
     /**
-     * 重新设置容器的宽和高
+     * 重新设置容器的宽和高，如果设置了overflow后，则overflow优先级更高
      * @param {Number} height 容器高
      * @param {Number} width 容器宽
+     * @param {Boolean} isScrollToTop 是否滚动到初始位置
      */
-    setSize(height, width) {
-      this.wrapHeight = height;
-      this.wrapWidth = width;
-      this.view.scrollTop = this.scrollTop = 0;
-      this.view.scrollLeft = this.scrollLeft = 0;
-      this.isVertical = false;
-      this.isHorizontal = false;
-      this.update();
+    setSize(height, width, isScrollToTop) {
+      this.newHeight = height;
+      this.newWidth = width;
+      if (isScrollToTop) {
+        this.view.scrollTop = this.scrollTop = 0;
+        this.view.scrollLeft = this.scrollLeft = 0;
+      }
+      // this.isVertical = false;
+      // this.isHorizontal = false;
 
-      this.$emit("mounted");
+      this.update();
+    },
+
+    setHeight(height, isScrollToTop) {
+      this.newHeight = height;
+      if (isScrollToTop) {
+        this.view.scrollTop = this.scrollTop = 0;
+      }
+      this.isVertical = false;
+
+      if (this.newHeight === "inherit") {
+        this.wrapHeight = this.$el.parentNode.offsetHeight;
+      } else if (this.newHeight === "auto") {
+        this.wrapHeight = 0;
+      } else {
+        this.wrapHeight = this.newHeight;
+      }
+
+      this.$nextTick(() => {
+        let height = this.view.scrollHeight;
+
+        this.isVertical = this.overflow === "auto" || this.overflow === "y";
+        this.isVertical = this.isVertical && this.wrapHeight < height;
+
+        if (this.isVertical) {
+          this.vbarHeight = parseInt(
+            (this.wrapHeight / height) * this.wrapHeight
+          );
+          this.scrollTopRange = height - this.wrapHeight;
+          this.scrollSize.height = this.wrapHeight;
+        } else {
+          this.vbarHeight = 0;
+          this.scrollTopRange = 0;
+          this.scrollSize.height = 0;
+        }
+        this.scroll();
+        this.$emit("mounted");
+      });
+    },
+
+    setWidth(width, isScrollToLeft) {
+      this.newWidth = width;
+      if (isScrollToLeft) {
+        this.view.scrollLeft = this.scrollLeft = 0;
+      }
+      this.isHorizontal = false;
+      this.wrapWidth = this.newWidth || this.$el.parentNode.offsetWidth;
+      this.$nextTick(() => {
+        let width = this.view.scrollWidth;
+
+        this.isHorizontal = this.overflow === "auto" || this.overflow === "x";
+        this.isHorizontal = this.isHorizontal && this.wrapWidth < width;
+
+        if (this.isHorizontal) {
+          this.hBarWidth = parseInt((this.wrapWidth / width) * this.wrapWidth);
+          this.scrollLeftRange = width - this.wrapWidth;
+          this.scrollSize.width = this.wrapWidth;
+        } else {
+          this.hBarWidth = 0;
+          this.scrollLeftRange = 0;
+          this.scrollSize.width = 0;
+        }
+
+        this.scroll();
+        this.$emit("mounted");
+      });
     },
     /**
      * 更新滚动条相关配置
      * 内部内容变化需要手动调用重新计算高度
      */
     update() {
-      let width = this.view.scrollWidth;
-      let height = this.view.scrollHeight;
-      this.isVertical = this.overflow === "auto" || this.overflow === "y";
-      this.isHorizontal = this.overflow === "auto" || this.overflow === "x";
-      this.isHorizontal = this.isHorizontal && this.wrapWidth < width;
-      this.isVertical = this.isVertical && this.wrapHeight < height;
+      this.isHorizontal = false;
+      this.isVertical = false;
+      this.wrapWidth = this.newWidth || this.$el.parentNode.offsetWidth;
 
-      if (this.isHorizontal) {
-        this.hBarWidth = parseInt((this.wrapWidth / width) * this.wrapWidth);
-        this.scrollLeftRange = width - this.wrapWidth;
-        this.scrollSize.width = this.wrapWidth;
+      if (this.newHeight === "inherit") {
+        this.wrapHeight = this.$el.parentNode.offsetHeight;
+      } else if (this.newHeight === "auto") {
+        this.wrapHeight = 0;
       } else {
-        this.hBarWidth = 0;
-        this.scrollLeftRange = 0;
-        this.scrollSize.width = 0;
+        this.wrapHeight = this.newHeight;
       }
 
-      if (this.isVertical) {
-        this.vbarHeight = parseInt(
-          (this.wrapHeight / height) * this.wrapHeight
-        );
-        this.scrollTopRange = height - this.wrapHeight;
-        this.scrollSize.height = this.wrapHeight;
-      } else {
-        this.vbarHeight = 0;
-        this.scrollTopRange = 0;
-        this.scrollSize.height = 0;
-      }
+      this.$nextTick(() => {
+        let width = this.view.scrollWidth;
+        let height = this.view.scrollHeight;
+
+        this.isVertical = this.overflow === "auto" || this.overflow === "y";
+        this.isVertical = this.isVertical && this.wrapHeight < height;
+        this.isHorizontal = this.overflow === "auto" || this.overflow === "x";
+        this.isHorizontal = this.isHorizontal && this.wrapWidth < width;
+
+        if (this.isHorizontal) {
+          this.hBarWidth = parseInt((this.wrapWidth / width) * this.wrapWidth);
+          this.scrollLeftRange = width - this.wrapWidth;
+          this.scrollSize.width = this.wrapWidth;
+        } else {
+          this.hBarWidth = 0;
+          this.scrollLeftRange = 0;
+          this.scrollSize.width = 0;
+        }
+
+        if (this.isVertical) {
+          this.vbarHeight = parseInt(
+            (this.wrapHeight / height) * this.wrapHeight
+          );
+          this.scrollTopRange = height - this.wrapHeight;
+          this.scrollSize.height = this.wrapHeight;
+        } else {
+          this.vbarHeight = 0;
+          this.scrollTopRange = 0;
+          this.scrollSize.height = 0;
+        }
+        this.scroll();
+
+        this.$emit("mounted");
+      });
     },
     /**
      * bar组件对应的v-model响应
@@ -259,6 +426,7 @@ export default {
      * 同步Bar组件的滚动距离
      */
     scroll() {
+      this.$emit("scroll");
       this.scrollTop = this.view.scrollTop / this.scrollTopRange;
       this.scrollLeft = this.view.scrollLeft / this.scrollLeftRange;
     },
@@ -281,30 +449,26 @@ export default {
         clearTimeout(this.timer);
         this.timer = null;
       }
+      // 节流
       this.timer = setTimeout(() => {
-        this.update();
-      }, 100);
+        // this.isHorizontal = false;
+        // this.isVertical = false;
+        this.$nextTick(() => {
+          this.update();
+        });
+      }, 50);
     }
   },
   mounted() {
-    this.wrapWidth = this.width || this.$el.parentNode.offsetWidth;
-    if (this.height === "inherit") {
-      this.wrapHeight = this.$el.parentNode.offsetHeight;
-    } else if (this.height === "auto") {
-      this.wrapHeight = 0;
-    } else {
-      this.wrapHeight = this.height;
-    }
-
-    this.isHorizontal = this.overflow === "auto" || this.overflow === "x";
-    this.isVertical = this.overflow === "auto" || this.overflow === "y";
+    // this.isHorizontal = this.overflow === "auto" || this.overflow === "x";
+    // this.isVertical = this.overflow === "auto" || this.overflow === "y";
     this.update();
-    window.addEventListener("resize", this.resizeHandle);
+    on(window, "resize", this.resizeHandle);
 
     this.emitProps();
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.resizeHandle);
+    off(window, "resize", this.resizeHandle);
   }
 };
 </script>

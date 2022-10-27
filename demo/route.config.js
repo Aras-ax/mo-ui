@@ -1,6 +1,7 @@
 import navConfig from "./nav.config";
 
 const loadDocs = function(path) {
+  // return  () => import(/* webpackChunkName: "true" */ `./docs/${path}.md`)
   return () =>
     import(
       /* webpackChunkName: "chunk-[request][index]" */ `./docs/${path}.md`
@@ -11,7 +12,7 @@ const registerRoute = navConfig => {
   let route = [];
   route.push({
     path: `/component`,
-    redirect: `/component/layout`,
+    redirect: `/component/introduce`,
     component: () =>
       import(/* webpackChunkName: "component" */ `./pages/component.vue`),
     children: []

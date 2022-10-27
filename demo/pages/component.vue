@@ -1,8 +1,13 @@
 <template>
   <div class="page page-container">
     <nav class="page-nav">
-      <mo-scroll>
-        <side-nav class="nav-scroll" :data="navsData" :base="`/component/`"></side-nav>
+      <mo-scroll ref="scroll">
+        <side-nav
+          class="namo-scroll"
+          :data="navsData"
+          :base="`/component/`"
+          @change="change"
+        ></side-nav>
       </mo-scroll>
     </nav>
     <section class="page-content">
@@ -19,6 +24,13 @@ export default {
     return {
       navsData
     };
+  },
+  methods: {
+    change() {
+      setTimeout(() => {
+        this.$refs.scroll.update();
+      }, 200);
+    }
   }
 };
 </script>
@@ -45,11 +57,13 @@ $nav-width: 256px;
     padding-left: 64px;
     padding-right: 24px;
     max-width: 1000px;
+    z-index: 0;
+    position: relative;
+    background-color: #fff;
   }
 
-  .nav-scroll {
-    padding-left: 24px;
-    padding-top: 24px;
+  .namo-scroll {
+    padding: 24px 0;
   }
 }
 
@@ -58,6 +72,9 @@ $nav-width: 256px;
 }
 .page-content .content > h3 {
   margin: 55px 0 20px;
+}
+.page-content .content > h4 {
+  margin: 24px 0 14px;
 }
 .page-content .content > table {
   border-collapse: collapse;
@@ -68,22 +85,22 @@ $nav-width: 256px;
   line-height: 1.5em;
 }
 .page-content .content > table strong {
-  font-weight: normal;
+  font-weight: bold;
 }
 .page-content .content > table td,
 .page-content .content > table th {
-  border-bottom: 1px solid #dcdfe6;
+  border-bottom: 1px solid #f0f0f0;
   padding: 15px;
   max-width: 250px;
 }
 .page-content .content > table th {
   text-align: left;
   white-space: nowrap;
-  color: #909399;
+  color: #262626;
   font-weight: normal;
 }
 .page-content .content > table td {
-  color: #606266;
+  color: #565656;
 }
 .page-content .content > table th:first-child,
 .page-content .content > table td:first-child {
@@ -93,7 +110,7 @@ $nav-width: 256px;
   margin: 10px 0;
   padding: 0 0 0 20px;
   font-size: 14px;
-  color: #5e6d82;
+  color: #595959;
   line-height: 2em;
 }
 </style>

@@ -7,7 +7,7 @@
       <li
         class="side-link__list__item"
         v-for="(node, i) in links"
-        :key="node.text"
+        :key="i"
         :class="{ active: active === i }"
         @click="scroll(node.top)"
       >
@@ -42,7 +42,9 @@ export default {
     calculate() {
       let wrapper = this.wrapper;
       if (wrapper) {
-        let list = Array.from(wrapper.children).filter(node => node.tagName === 'H3');
+        let list = Array.from(wrapper.children).filter(
+          node => node.tagName === "H3"
+        );
         let res = [];
         list.forEach(node => {
           res.push({
@@ -89,7 +91,7 @@ export default {
     }
   },
   mounted() {
-    this.wrapper = document.querySelector(".moui-doc");
+    this.wrapper = document.querySelector(".reasy-doc");
     this.calculate();
     window.addEventListener("scroll", this.scrollHandler);
 
@@ -109,8 +111,10 @@ export default {
 .side-link {
   position: fixed;
   top: 120px;
-  right: 24px;
+  right: 0;
   padding-left: 24px;
+  background-color: #fff;
+
   &__bar {
     position: absolute;
     left: 0;
@@ -142,18 +146,17 @@ export default {
   }
 
   &__list {
-    list-style: none;
+    list-style: none !important;
     margin: 0;
     padding: 0;
     &__item {
       height: 24px;
       font-size: 12px;
-      font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       color: #595959;
       line-height: 24px;
       cursor: pointer;
-      transition: color .3s;
+      transition: color 0.3s;
 
       &.active {
         color: #ff801f;

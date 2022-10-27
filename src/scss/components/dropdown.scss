@@ -1,0 +1,125 @@
+.mo-dropdown {
+  @mixin disabled-style {
+    color: $disabled-color  !important;
+    cursor: not-allowed;
+  }
+
+  .ver-align-middle {
+    vertical-align: middle;
+  }
+
+  display: inline-block;
+
+  .mo-dropdown__label {
+    display: inline-block;
+    font-size: $font-size-m;
+    font-weight: 400;
+    color: $title-color;
+    cursor: pointer;
+
+    &.mo-dropdown__label-button {
+      padding: 0 16px;
+      line-height: 29px;
+      border: 1px solid $border-color;
+      border-radius: 2px;
+
+      &.mo-dropdown__label--active {
+        border-color: $main-active-color;
+      }
+
+      &:not(.mo-dropdown__label--disabled) {
+        &:hover {
+          border-color: rgba($main-active-color, 0.9);
+        }
+
+        &:focus {
+          border-color: rgba($main-active-color, 0.9);
+        }
+
+        &:active {
+          border-color: darken($main-active-color, 10%);
+        }
+      }
+    }
+
+    .v-icon-down {
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+
+    &.mo-dropdown__label--active {
+      color: $main-active-color;
+    }
+
+    &.mo-dropdown__label--disabled {
+      @include disabled-style;
+    }
+
+    &:hover {
+      color: rgba($main-active-color, 0.9);
+    }
+
+    &:focus {
+      color: rgba($main-active-color, 0.9);
+    }
+
+    &:active {
+      color: darken($main-active-color, 10%);
+    }
+  }
+
+  @at-root {
+    $option-height: 32px;
+    $option-line-height: 22px;
+    $menu-padding-tb: $option-height / 4;
+
+    .position-panel {
+      border-radius: 2px;
+    }
+
+    .mo-dropdown__menu {
+      padding: $menu-padding-tb 0;
+
+      .mo-dropdown__option {
+        padding: ($option-height - $option-line-height)/2 16px;
+        line-height: $option-line-height;
+        font-size: 14px;
+        color: $title-color;
+        cursor: pointer;
+
+        &.mo-dropdown__option--divided {
+          border-bottom: 1px solid $border-color;
+        }
+
+        &.mo-dropdown__option--active {
+          color: $main-active-color;
+        }
+
+        &.mo-dropdown__option--disabled {
+          @include disabled-style;
+        }
+
+        &:not(.mo-dropdown__option--disabled) {
+          &:hover {
+            color: $main-active-color;
+            background-color: rgba($main-active-color, 0.1);
+          }
+        }
+
+        .mo-dropdown__icon {
+          margin-right: 4px;
+          vertical-align: middle;
+        }
+
+        .mo-dropdown__text {
+          vertical-align: middle;
+        }
+      }
+    }
+
+    :export {
+      optionHeight: $option-height;
+      menuVerticalPadding: $menu-padding-tb * 2;
+    }
+  }
+}

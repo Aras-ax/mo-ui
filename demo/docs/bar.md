@@ -1,6 +1,15 @@
 ## 柱状图
 
-柱状图是用竖直的柱子来展现数据，一般用于展现横向的数据变化及对比。
+表征分类型变量 vs 数值型变量的关系。
+
+### 按需引用
+
+```js
+import { Base, Bar } from "@reasy-team/mo-ui";
+
+Vue.use(Bar);
+Vue.use(Base);
+```
 
 ### 基础示例
 
@@ -297,10 +306,10 @@
     },
     methods: {
       legendClick(index) {
-        alert(`点击[${index}]`);
+        this.$message.success(`点击[${index}]`);
       },
       click(arg) {
-        alert(`类别[${arg.category}]，系列[${arg.legend}]，值[${arg.value}]`);
+        this.$message.success(`类别[${arg.category}]，系列[${arg.legend}]，值[${arg.value}]`);
       }
     }
   };
@@ -394,7 +403,7 @@
 | name | 系列名称 | string | -      | -      |
 | data | 系列数据 | array  | -      | -      |
 
-### 事件 Events
+## 事件 Events
 
 | 方法名      | 说明         | 参数                                                                                       |
 | ----------- | ------------ | ------------------------------------------------------------------------------------------ |

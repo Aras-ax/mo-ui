@@ -1,0 +1,45 @@
+.mo-popconfirm {
+  display: inline-block;
+}
+
+.mo-popconfirm__box {
+  $icon-size: 16px;
+  padding: 16px;
+
+  .mo-popconfirm__main {
+    @include clearfix;
+
+    .mo-popconfirm__title {
+      float: left;
+      width: 100%;
+      line-height: 22px;
+      color: $title-color;
+      font-size: $font-size-m;
+      font-weight: 400;
+
+      &.has-icon {
+        padding-left: $icon-size + $icon-size / 2;
+      }
+    }
+    .mo-popconfirm__icon {
+      float: left;
+      margin-left: -100%;
+      font-size: $icon-size;
+      line-height: 22px;
+
+      &.v-icon-remind-plane {
+        color: $main-active-color;
+      }
+    }
+  }
+
+  .mo-popconfirm__footer {
+    margin-top: 16px;
+    text-align: right;
+    .mo-popconfirm__button-item {
+      & + .mo-popconfirm__button-item {
+        margin-left: 16px;
+      }
+    }
+  }
+}

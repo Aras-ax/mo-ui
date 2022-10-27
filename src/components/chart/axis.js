@@ -14,26 +14,39 @@ export default class ChartAxis {
   }
 
   initOptions(options) {
+    // 坐标轴字体大小
     this.fontSize = options.fontSize;
+    // 坐标轴宽
     this.width = options.renderWidth;
+    // 坐标轴高
     this.height = options.end;
-    // X轴是否偏移，即是从原点开始还是偏移半个身位开始
+    // X轴是否偏移，即是从原点开始还是偏移半个身位开始，用于折线图
     this.offsetGridLines = options.offsetGridLines;
+    // x轴label集合
     this.xLabels = options.categories;
+    // 图表系列数据
     this.series = options.series;
+    // 坐标轴在svg中Y轴的起点位置
     this.startPoint = options.start;
+    // 坐标轴在svg中Y轴的结束位置
     this.endPoint = options.end;
   }
 
   initProps() {
+    // Y轴坐标的刻度数
     this.steps = 0;
+    // Y轴每个刻度值的间隔
     this.stepGap = 0;
+    // 全局svg辅助类
     this.svgHandle = new SvgHandle();
+    // svg中字体绘制出来的高度
     this.svgHeight = this.svgHandle.getTextHeight("Tedna");
-    // X轴每一格宽
+    // X轴每个刻度的宽
     this.xLabelWidth = 0;
-    this.xLabelRotation = 0;
+    // X轴label实际的宽度
     this.xLabelsWidth = [];
+    // x轴label不相互遮挡显示需要的旋转角度
+    this.xLabelRotation = 0;
     // Y轴标签宽
     this.yLabelWidth = 0;
     // X轴在画布左侧的内边距
@@ -42,6 +55,7 @@ export default class ChartAxis {
     this.xScalePaddingRight = 0;
     this.min = Number.MAX_SAFE_INTEGER;
     this.max = Number.MIN_SAFE_INTEGER;
+    // y轴label集合
     this.yLabels = [];
   }
 
@@ -142,7 +156,7 @@ export default class ChartAxis {
   }
 
   /**
-   * 计算x坐标轴的偏向角和距离
+   * 计算x轴label不相互遮挡显示需要旋转的角度和旋转后的宽高
    */
   calculateXLabelRotation() {
     this.xLabelsWidth = this.xLabels.map(label => this.getTextLength(label));
@@ -225,7 +239,9 @@ export default class ChartAxis {
 
     return innerWidth / (this.xLabels.length - (this.offsetGridLines ? 0 : 1));
   }
-
+  /**
+   * 对包含小数点的数据进行修正为整数
+   */
   fixData() {
     // xy轴的坐标刻度优化
     this.xLabelWidth = Math.floor(this.xLabelWidth);
@@ -378,6 +394,9 @@ export default class ChartAxis {
     svg.innerHTML = innerHtml;
   }
 
+  /**
+   * 绘制svg text标签
+   */
   drawText(
     x,
     y,
@@ -392,14 +411,23 @@ export default class ChartAxis {
     )}</text>`;
   }
 
+  /**
+   * 绘制svg tspan标签
+   */
   drawTspan(x, y, text) {
     return `<tspan x="${x}" y="${y}">${text}</tspan>`;
   }
 
+  /**
+   * 绘制svg line标签
+   */
   drawLine(x1, y1, x2, y2, stroke = "#e9e9e9", dashArray = "0") {
     return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="1" stroke="${stroke}" shape-rendering="crispEdges" stroke-dasharray="${dashArray}"></line>`;
   }
 
+  /**
+   * 绘制svg path标签
+   */
   drawPath(path) {
     return `<path d="${path} Z" stroke="#d9d9d9" stroke-width="1" fill="none"></path>`;
   }
@@ -427,14 +455,23 @@ function pythagorean(a, b) {
   return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 }
 
+/**
+ * 正弦
+ */
 function sin(angel) {
   return Math.sin(toRadians(angel));
 }
 
+/**
+ * 余弦
+ */
 function cos(angel) {
   return Math.cos(toRadians(angel));
 }
 
+/**
+ * html特殊字符转义
+ */
 function htmlFormat(str) {
   return str.replace(/[<>&"]/g, function(c) {
     return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c];
@@ -493,7 +530,7 @@ export class SvgHandle {
   /**
    * 获取文本的宽
    */
-  getTextWidth(text = "MoShang") {
+  getTextWidth(text = "mo-ui") {
     this.textNode.textContent = text;
     return this.textNode.getBBox().width;
   }
@@ -501,7 +538,7 @@ export class SvgHandle {
   /**
    * 获取文本的高
    */
-  getTextHeight(text = "MoShang") {
+  getTextHeight(text = "mo-ui") {
     this.textNode.textContent = text;
     this.svgHeight = this.textNode.getBBox().height;
     return this.svgHeight;

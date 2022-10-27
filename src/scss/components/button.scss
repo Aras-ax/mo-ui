@@ -1,0 +1,197 @@
+.mo-button {
+  text-align: center;
+  outline: 0;
+  border: 0;
+  border-radius: $button-radius;
+  cursor: pointer;
+
+  & + & {
+    margin-left: 12px;
+  }
+  &--inner {
+    min-width: auto !important;
+  }
+  &__item {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &--medium {
+    padding: 0 16px;
+    height: $form-button-height;
+    min-width: 64px;
+    font-size: $font-size-m;
+    .mo-button__item {
+      line-height: $form-button-height;
+    }
+  }
+  .mo-button__item + .mo-button__item {
+    padding-left: 4px;
+  }
+
+  &--small {
+    padding: 0 12px;
+    height: $form-button-height-s;
+    min-width: 48px;
+    font-size: $font-size-s;
+
+    .button-prefix {
+      padding-right: 4px;
+    }
+
+    .button-suffix {
+      padding-left: 4px;
+    }
+    .mo-button__item {
+      line-height: $form-button-height-s;
+    }
+  }
+
+  &--large {
+    padding: 0 24px;
+    height: $form-button-height-l;
+    min-width: 72px;
+    font-size: $font-size-l;
+
+    .button-prefix {
+      padding-right: 8px;
+    }
+
+    .button-suffix {
+      padding-left: 8px;
+    }
+    .mo-button__item {
+      line-height: $form-button-height-l;
+    }
+  }
+
+  &--primary {
+    background-color: $main-active-color;
+    color: #fff;
+
+    &:hover {
+      background-color: rgba($main-active-color, 0.85);
+    }
+
+    &:focus {
+      box-shadow: 0 0 2px 2px scale-color($main-active-color, $alpha: -60%);
+    }
+
+    &:active {
+      background-color: darken($main-active-color, 10%);
+    }
+
+    &--disabled {
+      background: scale-color($main-active-color, $alpha: -60%) !important;
+      cursor: not-allowed;
+      box-shadow: none !important;
+    }
+  }
+
+  &--info {
+    background-color: #fff;
+    color: $info-color;
+    border: 1px solid $border-color;
+
+    &:hover {
+      background-color: #fff;
+      color: $main-active-color;
+      border-color: $main-active-color;
+    }
+
+    &:focus {
+      border-color: $main-active-color;
+      box-shadow: 0 0 2px 2px scale-color($main-active-color, $alpha: -60%);
+      background-color: scale-color($main-active-color, $alpha: -90%);
+    }
+
+    &:active {
+      background-color: scale-color($main-active-color, $alpha: -90%);
+    }
+
+    &--disabled {
+      background: $disabled-background-color !important;
+      color: $disabled-color !important;
+      border-color: $border-color !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+    }
+
+    &.mo-button-- {
+      @each $type, $size in (large, $form-button-height-l - 2px),
+        (medium, $form-button-height - 2px), (small, $form-button-height-s - 2px)
+      {
+        &#{$type} {
+          .mo-button__item {
+            line-height: #{$size};
+          }
+        }
+      }
+    }
+  }
+
+  &--danger {
+    background-color: $error-color;
+    color: #fff;
+
+    &:hover {
+      background-color: rgba($error-color, 0.85);
+    }
+
+    &:focus {
+      background-color: rgba($error-color, 0.9);
+      box-shadow: 0 0 2px 2px scale-color($error-color, $alpha: -60%);
+    }
+
+    &:active {
+      box-shadow: none;
+      background-color: darken($error-color, 10%);
+    }
+
+    &--disabled {
+      background: scale-color($error-color, $alpha: -60%) !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+    }
+  }
+
+  &--text {
+    width: auto;
+    color: $main-active-color;
+    background-color: transparent;
+    padding: 1px 2px;
+
+    line-height: 22px;
+    height: auto;
+
+    &:hover {
+      color: rgba($main-active-color, 0.85);
+    }
+
+    &:focus {
+      background-color: #fff;
+      border-color: scale-color($main-active-color, $alpha: -60%);
+    }
+
+    &:active {
+      color: darken($main-active-color, 10%);
+      border-color: transparent;
+    }
+
+    &--disabled {
+      color: $disabled-color !important;
+      cursor: not-allowed;
+      border-color: transparent !important;
+    }
+  }
+
+  &--loading {
+    animation: rotate 1.6s linear infinite;
+    display: inline-block;
+  }
+
+  &__icon {
+    font-size: 16px;
+    vertical-align: middle;
+  }
+}

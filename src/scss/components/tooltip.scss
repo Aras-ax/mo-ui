@@ -1,0 +1,15 @@
+.mo-tooltip {
+  display: inline-block;
+}
+.mo-tooltip--block {
+  display: block;
+}
+
+.mo-tooltip__main {
+  padding: 5px 8px;
+
+  .mo-tooltip__content {
+    line-height: 22px;
+    font-size: $font-size-m;
+  }
+}

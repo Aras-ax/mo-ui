@@ -1,0 +1,249 @@
+@mixin select-size($fontSize, $lineHeight) {
+  font-size: $fontSize;
+
+  .input-text,
+  .mo-select-options__item,
+  .placeholder-text {
+    font-size: $fontSize;
+    height: $lineHeight;
+    line-height: $lineHeight - 2;
+  }
+
+  .mo-select__icon {
+    height: $lineHeight;
+    line-height: $lineHeight;
+  }
+
+  .mo-select__icon--right--active {
+    height: $lineHeight - 2;
+    line-height: $lineHeight - 2;
+  }
+}
+
+.mo-select {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: $elem-width;
+
+  .placeholder-text {
+    padding: 0;
+  }
+
+  &__label {
+    cursor: pointer;
+    padding-right: 30px;
+
+    &--text {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    &--position {
+      position: relative;
+      // top: -1px;
+    }
+
+    &__item {
+      background: $disabled-border-color;
+      padding: 0 8px;
+      display: inline-block;
+      line-height: 20px;
+      border-radius: 2px;
+
+      &+& {
+        margin-left: 4px;
+      }
+    }
+  }
+
+  &__icon--right--active {
+    font-size: 16px !important;
+    float: right;
+    color: $main-active-color;
+  }
+
+  &__icon--right {
+    font-size: 16px !important;
+    vertical-align: top;
+    display: inline-block;
+    color: $light-color;
+    padding-left: 8px;
+
+    &:hover {
+      color: $main-active-color;
+    }
+  }
+
+  &__input {
+    width: 100%;
+
+    .input-text {
+      padding-right: 30px !important;
+    }
+
+    &--clear .input-text {
+      padding-right: 60px !important;
+    }
+  }
+
+  &-options {
+    margin: 8px 0;
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    &__item {
+      padding: 0 8px;
+      cursor: pointer;
+      white-space: nowrap;
+
+      &--disabled {
+        color: $disabled-color;
+        cursor: not-allowed;
+      }
+
+      &.active {
+        color: $main-active-color;
+      }
+
+      &:hover {
+        background-color: rgba($main-active-color, 0.05);
+        color: $main-active-color;
+      }
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    font-size: 16px;
+    padding: 0 8px;
+    vertical-align: middle;
+    z-index: 3;
+    cursor: pointer;
+    color: $light-color;
+    transition: all 0.2s;
+
+    &--active {
+      transform: rotateZ(180deg);
+    }
+  }
+
+  &--large {
+    @include select-size($font-size-l, $form-line-height-l);
+
+    &.mo-input--no-border {
+      @include select-size($font-size-l, $form-line-height-l - 2);
+    }
+
+    .mo-select__label__item,
+    .mo-select__icon--right {
+      line-height: $form-line-height-l - 4px;
+    }
+
+    // &.mo-select-options {
+    //   max-height: 200px;
+    // }
+  }
+
+  &--medium {
+    @include select-size($font-size-m, $form-line-height);
+
+    &.mo-input--no-border {
+      @include select-size($font-size-m, $form-line-height - 2);
+    }
+
+    .mo-select__label__item,
+    .mo-select__icon--right {
+      line-height: $form-line-height - 4px;
+    }
+
+    // &.mo-select-options {
+    //   max-height: 160px;
+    // }
+  }
+
+  &--small {
+    @include select-size($font-size-s, $form-line-height-s);
+
+    &.mo-input--no-border {
+      @include select-size($font-size-s, $form-line-height-s - 2);
+    }
+
+    .mo-select__label__item,
+    .mo-select__icon--right {
+      line-height: $form-line-height-s - 4px;
+    }
+
+    .mo-select__label {
+      padding-right: 24px;
+    }
+
+    // &.mo-select-options {
+    //   max-height: 120px;
+    // }
+  }
+
+  .mo-input__icon--suffix {
+    right: 28px;
+  }
+
+  .v-icon-close-plane {
+    transition: none;
+  }
+
+  &:hover {
+    .input-text:not(.is-focus) {
+      border-color: $border-hover-color;
+    }
+
+    .is-focus .input-text {
+      border-color: $main-active-color;
+    }
+  }
+}
+
+.mo-select__input.is-focus {
+  border: none;
+  box-shadow: none;
+
+  .input-text {
+    border-color: $main-active-color;
+    box-shadow: 0px 0px 4px 0px rgba($main-active-color, 0.5);
+  }
+}
+
+.slide-down-enter-active {
+  animation: slideInUp 0.3s;
+}
+
+.slide-down-leave-active {
+  animation: slideOutUp 0.3s;
+}
+
+.is-disabled {
+  .mo-select__icon {
+    cursor: not-allowed;
+    color: $disabled-color;
+
+    &:hover {
+      color: $disabled-color;
+    }
+  }
+
+  .mo-select__label__item {
+    background: $disabled-background-color;
+    color: $disabled-color;
+    border: 1px solid $disabled-border-color;
+  }
+
+  .mo-select__icon--right {
+    color: $disabled-color;
+  }
+}

@@ -1,0 +1,168 @@
+.mo-tabs {
+  @mixin card-and-button-size {
+    @each $size, $padding in (S, 6px 24px), (M, 8px 24px), (L, 10px 24px) {
+      &.tab-nav--#{$size} {
+        padding: $padding;
+      }
+    }
+  }
+  @mixin tab-nav-item-disabled {
+    color: $disabled-color;
+    cursor: not-allowed;
+  }
+
+  width: 100%;
+  .tab-nav {
+    position: relative;
+    display: inline-block;
+    margin: 0 0 12px;
+    width: 100%;
+    &-actions {
+      display: inline-block;
+    }
+    &-item {
+      display: inline-block;
+      cursor: pointer;
+      @each $size, $line-height, $font-size, $padding in (S, 20px, 12px, 12px),
+        (M, 22px, 14px, 16px), (L, 24px, 16px, 20px)
+      {
+        &.tab-nav--#{$size} {
+          line-height: $line-height;
+          font-size: $font-size;
+          padding: 0 $padding;
+        }
+      }
+      &:hover {
+        color: rgba($main-active-color, 0.9);
+      }
+      &.tab-nav--active {
+        @include bold;
+        color: $main-active-color;
+        font-weight: 500;
+      }
+      &.tab-nav-item--disabled {
+        @include tab-nav-item-disabled;
+        &.tab-nav--active {
+          color: rgba($main-active-color, 0.73);
+        }
+      }
+    }
+
+    &.tab-nav--disabled {
+      .tab-nav-item {
+        @include tab-nav-item-disabled;
+        border-color: $border-color;
+        &.tab-nav--active {
+          color: rgba($main-active-color, 0.73);
+        }
+      }
+      &.tab-nav--button {
+        .tab-nav--active {
+          border-color: rgba($main-active-color, 0.6);
+        }
+      }
+      &.tab-nav--link {
+        .tab-active-border {
+          background-color: rgba($main-active-color, 0.73);
+        }
+      }
+    }
+
+    .tab-active-border {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      height: 2px;
+      background-color: $main-active-color;
+      &.tab-active-border--transition {
+        transition: all 0.2s ease-out 0.1s;
+      }
+    }
+  }
+
+  .tab-nav--link {
+    border-bottom: 1px solid #f5f5f5;
+    .tab-nav-item {
+      @each $size, $margin in (S, 0 0 1px), (M, 0 0 8px), (L, 0 0 10px) {
+        &.tab-nav--#{$size} {
+          margin: $margin;
+        }
+      }
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+  .tab-nav--card {
+    border-bottom: 1px solid $border-color;
+    .tab-nav-actions {
+      margin-bottom: -1px;
+      border: 1px solid $border-color;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+    }
+    .tab-nav-item {
+      border-left: 1px solid $border-color;
+      @include card-and-button-size;
+      &:first-child {
+        border-left: none;
+      }
+      &.tab-nav--active {
+        border-bottom: 1px solid #fff;
+      }
+    }
+  }
+  .tab-nav--tag {
+    border-bottom: 1px solid $border-color;
+    .tab-nav-actions {
+      margin-bottom: -1px;
+    }
+    .tab-nav-item {
+      border: 1px solid transparent;
+      border-bottom: 1px solid $border-color;
+      margin-right: 4px;
+      border-radius: 4px 4px 0 0;
+      background-color: $disabled-background-color;
+      color: $light-color;
+
+      @include card-and-button-size;
+
+      &.tab-nav--active {
+        border-color: $border-color;
+        border-bottom-color: #fff;
+        background-color: #fff;
+        color: $title-color;
+      }
+    }
+  }
+  .tab-nav--button {
+    .tab-nav-item--disabled {
+      &.tab-nav--active {
+        border-color: rgba($main-active-color, 0.6);
+      }
+    }
+
+    .tab-nav-item {
+      position: relative;
+      padding: 8px 24px;
+      border: 1px solid $border-color;
+      @include card-and-button-size;
+      &:first-child {
+        border-radius: 4px 0 0 4px;
+      }
+      &:last-child {
+        border-radius: 0 4px 4px 0;
+      }
+      &:nth-of-type(n + 2) {
+        margin-left: -1px;
+      }
+    }
+    .tab-nav--active {
+      border-color: rgba($main-active-color, 0.9);
+      z-index: 2;
+    }
+  }
+}

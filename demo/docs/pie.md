@@ -1,6 +1,15 @@
 ## 环形图
 
-饼图以扇区的形式显示每一个数值相对于总数值的大小。
+用于表示不同分类的占比情况，通过弧度大小来对比各种分类
+
+### 按需引用
+
+```js
+import { Base, Pie } from "@reasy-team/mo-ui";
+
+Vue.use(Pie);
+Vue.use(Base);
+```
 
 ### 基础示例
 
@@ -169,10 +178,10 @@
     },
     methods: {
       legendClick(index) {
-        alert(`点击[${index}]`);
+        this.$message.success(`点击[${index}]`);
       },
       click(arg) {
-        alert(`类别[${arg.category}]，值[${arg.value}]`);
+        this.$message.success(`类别[${arg.category}]，值[${arg.value}]`);
       }
     }
   };

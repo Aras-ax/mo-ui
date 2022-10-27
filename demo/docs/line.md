@@ -1,6 +1,15 @@
 ## 折线图
 
-折线图是用直线或曲线将一系列的数据点连接的图表，直线图经常用来展现随着时间变化的数据。
+表征分类型变量 vs 数值型变量的关系。
+
+### 按需引用
+
+```js
+import { Base, Line } from "@reasy-team/mo-ui";
+
+Vue.use(Line);
+Vue.use(Base);
+```
 
 ### 基础示例
 
@@ -303,11 +312,6 @@ export default {
 
 
 
-
-
-
-
-
 ### 事件
 
 定义与折线图的交互逻辑。
@@ -360,7 +364,7 @@ export default {
     },
     methods: {
       legendClick(index) {
-        alert(`点击[${index}]`);
+        this.$message.success(`点击[${index}]`);
       }
     }
   };

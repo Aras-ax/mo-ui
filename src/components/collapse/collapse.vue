@@ -1,5 +1,5 @@
 <template>
-  <div class="mo-collapse border-b" :class="{'disabled': isDisabled}">
+  <div class="mo-collapse border-b" :class="{ disabled: isDisabled }">
     <div
       class="mo-collapse__header"
       :class="{ 'is-active': isActive }"
@@ -10,7 +10,7 @@
         {{ title }}
       </template>
       <i
-        class="mo-collapse__arrow v-icon-up"
+        class="mo-collapse__arrow v-icon-down"
         :class="{ 'is-active': isActive }"
       ></i>
     </div>

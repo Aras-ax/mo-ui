@@ -1,4 +1,6 @@
 const path = require("path");
+const multer = require("multer");
+const upload = multer({ dest: "upload/" });
 
 function resolve(dir) {
   return path.resolve(__dirname, dir);
@@ -9,16 +11,31 @@ module.exports = {
   pages: {
     index: {
       entry: "src/main.js",
-      title: "mo-ui vue2.x PC组件库"
+      title: "mo-ui"
     }
   },
   outputDir: "docs",
   publicPath: "./",
+  devServer: {
+    //index: "falsy",
+    setup: app => {
+      app.post("/cgi-bin/**", upload.single("file"), function(req, res) {
+        console.log("req.body========", req.body);
+        console.log("req.file========", req.file);
+        setTimeout(() => {
+          res.send({ status: "success" });
+        }, 1000);
+      });
+    },
+    after: function() {
+      console.log("########################  after");
+    }
+  },
   css: {
     loaderOptions: {
       scss: {
         // eslint-disable-next-line prettier/prettier
-        prependData: `@import "src/scss/vars.scss";`
+        prependData: `@import "src/scss/varibles.scss";`
       }
     },
     extract: {

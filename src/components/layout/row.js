@@ -7,12 +7,10 @@ export default {
       validator(val) {
         val = parseInt(val);
         if (val < 0) {
-          // eslint-disable-next-line
           console.error("[mo-row]的[gutter]属性必须大于零");
           return false;
         }
         if (val % 2 !== 0) {
-          // eslint-disable-next-line
           console.warn("[mo-row]的[gutter]属性建议设成偶数");
           return false;
         }

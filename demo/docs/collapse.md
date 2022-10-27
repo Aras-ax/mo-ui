@@ -2,6 +2,15 @@
 
 可以折叠/展开的内容区域。
 
+### 按需引用
+
+```js
+import { Base, Collapse } from "@reasy-team/mo-ui";
+
+Vue.use(Collapse);
+Vue.use(Base);
+```
+
 ### 基础示例
 
 :::demo
@@ -48,8 +57,8 @@
 
 ```html
 <mo-collapse>
-  <template mo-slot:title>
-    <i class="mo-icon-ok-line"></i>
+  <template v-slot:title>
+    <i class="v-icon-ok-line"></i>
     <label>枫</label>
   </template>
   <pre>
@@ -104,7 +113,7 @@
 
 ### 折叠面板状态设置
 
-:::demo 通过`actived`属性设置折叠面板的初始状态，同时也可以通过`mo-model`指令对折叠面板的展开收起状态进行绑定。
+:::demo 通过`actived`属性设置折叠面板的初始状态，同时也可以通过`v-model`指令对折叠面板的展开收起状态进行绑定。
 
 ```html
 <mo-collapse title="默认打开折叠面板" :actived="true">
@@ -119,7 +128,7 @@
 :::demo 通过`disabled`属性设置折叠面板的禁用状态。禁用后，面板的折叠状态不可修改。
 
 ```html
-<mo-collapse title="disabled" disabled :actived="true">
+<mo-collapse title="disabled" disabled>
   disabled，无法切换展开和收缩状态。
 </mo-collapse>
 ```
@@ -132,7 +141,7 @@
 | --------------- | -------- | ------- | ------ | ------ |
 | title           | 标题     | string  | -      | -      |
 | text            | 内容     | string  | -      | -      |
-| actived/mo-model | 展开状态 | boolean | -      | false  |
+| actived/v-model | 展开状态 | boolean | -      | false  |
 | disabled        | 禁用     | boolean | -      | false  |
 
 ## Slot

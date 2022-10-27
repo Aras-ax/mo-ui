@@ -1,4 +1,3 @@
-// 参考element-ui
 const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -8,23 +7,33 @@ const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const loader = require("sass-loader");
-
-const isProd = process.env.NODE_ENV === "production";
+const CopyPlugin = require("copy-webpack-plugin");
+const { getConfig } = require("./config");
+const { variables, isProd } = getConfig();
 
 const webpackConfig = {
   mode: process.env.NODE_ENV,
   entry: "./demo/index.js",
   output: {
     path: path.resolve(process.cwd(), "./docs/"),
-    publicPath: process.env.CI_ENV || "",
     filename: "[name].[hash:7].js",
-    chunkFilename: isProd ? "page/[name].[hash:7].js" : "[name].js"
+    chunkFilename: isProd ? "page/[name].[hash:7].js" : "[name].js",
+    devtoolModuleFilenameTemplate: info => {
+      const resPath = info.resourcePath;
+      if (/node_modules/.test(resPath) || /\.js$/.test(resPath)) {
+        return `webpack:///${resPath.replace(/^(\.\/)?src/, "my-code/src")}`;
+      } else if (/\.vue$/.test(resPath)) {
+        if (!/type=script/.test(info.identifier)) {
+          return `webpack:///${resPath.replace(/^(\.\/)?src/, "my-code/src")}`;
+        }
+      }
+      return `webpack:///${resPath}?${info.hash}`;
+    }
   },
   resolve: {
     extensions: [".js", ".vue", ".json"],
     alias: {
-      main: path.resolve(__dirname, "../src"),
+      "@": path.resolve(__dirname, "../src"),
       packages: path.resolve(__dirname, "../packages"),
       demo: path.resolve(__dirname, "../demo")
     },
@@ -32,7 +41,7 @@ const webpackConfig = {
   },
   devServer: {
     host: "127.0.0.1",
-    port: 9090,
+    port: 10001,
     publicPath: "/",
     hot: true
   },
@@ -47,7 +56,7 @@ const webpackConfig = {
       {
         enforce: "pre",
         test: /\.(vue|js)$/,
-        exclude: /node_modules|docs/,
+        exclude: /node_modules|docs|src/,
         loader: "eslint-loader"
       },
       {
@@ -68,12 +77,19 @@ const webpackConfig = {
       {
         test: /\.(scss|css)$/,
         use: [
-          isProd ? MiniCssExtractPlugin.loader : "style-loader",
+          isProd
+            ? {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  publicPath: "../"
+                }
+              }
+            : "style-loader",
           "css-loader",
           {
             loader: "sass-loader",
             options: {
-              prependData: `@import "src/scss/vars.scss";`
+              prependData: variables
             }
           }
         ]
@@ -96,12 +112,7 @@ const webpackConfig = {
       },
       {
         test: /\.(svg|otf|ttf|woff2?|eot|gif|png|jpe?g)(\?\S*)?$/,
-        loader: "url-loader",
-        // todo: 这种写法有待调整
-        query: {
-          limit: 10000,
-          name: path.posix.join("static", "[name].[hash:7].[ext]")
-        }
+        loader: "url-loader?limit=8192&name=font/[hash:8].[name].[ext]"
       }
     ]
   },
@@ -111,12 +122,13 @@ const webpackConfig = {
       template: "./demo/index.tpl",
       filename: "./index.html",
       favicon: "./public/favicon.ico",
-      title: "mo-chart"
+      title: "mo-ui"
     }),
     new ProgressBarPlugin(),
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
-      "process.env.FAAS_ENV": JSON.stringify(process.env.FAAS_ENV)
+      "process.env.FAAS_ENV": JSON.stringify(process.env.FAAS_ENV),
+      "process.env.THEME": JSON.stringify(process.env.THEME)
     }),
     new webpack.LoaderOptionsPlugin({
       vue: {
@@ -139,9 +151,24 @@ if (isProd) {
     "highlight.js": "hljs"
   };
   webpackConfig.plugins.push(
+    // new ReplacePlugin({
+    //   include: [/node_modules/],
+    //   patterns: [
+    //     {
+    //       regex: /#ff801f/gi,
+    //       value: "#d82228"
+    //     }
+    //   ],
+    //   values: {
+    //     "process.env.NODE_ENV": JSON.stringify("production")
+    //   }
+    // }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "css/[name].[contenthash:7].css"
+    }),
+    new CopyPlugin({
+      patterns: [{ from: path.resolve(process.cwd(), "./img/"), to: "img" }]
     })
   );
   webpackConfig.optimization.minimizer.push(
@@ -152,11 +179,16 @@ if (isProd) {
     }),
     new OptimizeCSSAssetsPlugin({})
   );
+  // webpackConfig.optimization.minimize = false;
   webpackConfig.optimization.splitChunks = {
     cacheGroups: {
+      lang: {
+        test: /lang.js/,
+        name: "lang"
+      },
       vendor: {
         test: /[\\/]src[\\/]/,
-        name: "mo-chart",
+        name: "mo-ui",
         chunks: "all"
       }
     }

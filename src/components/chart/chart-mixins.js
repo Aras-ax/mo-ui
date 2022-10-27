@@ -3,6 +3,7 @@ import { DEFAULT_COLORS } from "./chart-lib";
 
 export default {
   props: {
+    // 系列数据
     series: {
       type: Array,
       required: true,
@@ -18,10 +19,12 @@ export default {
         );
       }
     },
+    // 类别数据，对应x轴
     categories: {
       type: Array,
       required: true
     },
+    // 图例显示类型
     legend: {
       type: String,
       default: "circle",
@@ -29,31 +32,39 @@ export default {
         return ["circle", "square"].indexOf(val) > -1;
       }
     },
+    // 图表颜色
     colors: {
       type: Array,
       default() {
         return DEFAULT_COLORS;
       }
     },
+    // 图表宽度
     width: {
       type: Number,
       default: 0
     },
+    // 图表高度
     height: {
       type: Number,
       default: 0
     },
+    // 图表X轴是否偏移，用于折线图
     isOffset: {
       type: Boolean,
       default: true
     },
+    // 图表标题
     title: String,
+    // 图表备注
     comment: String
   },
   computed: {
+    // 图例列表
     legends() {
       return this.series.map(item => item.name);
     },
+    // 是否加载动画
     hasAnimation() {
       return !!this.animation;
     }
@@ -62,11 +73,14 @@ export default {
 
 export const ChartProps = {
   props: {
+    // 是否显示tip
     showTip: {
       type: Boolean,
       default: true
     },
+    // 预设tip内容
     tipText: String,
+    // 动画名称
     animation: {
       type: String,
       default: "easeOutCubic"
@@ -74,13 +88,16 @@ export const ChartProps = {
   }
 };
 
+// 柱图和折线图Mixin
 export const BarLineMixin = {
   computed: {
+    // 图例颜色
     legendColor() {
       return this.$refs.chartbase ? this.$refs.chartbase.legendColor : {};
     }
   },
   methods: {
+    // 获取坐标轴对象
     getAxis() {
       if (this.$refs.chartbase) {
         let axis = this.$refs.chartbase.axis;
@@ -98,6 +115,7 @@ export const BarLineMixin = {
         });
       }
     },
+    // 刷新图表
     refresh(data) {
       this.update();
       this.$emit("legendClick", data);

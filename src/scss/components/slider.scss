@@ -1,0 +1,161 @@
+$slider-line-height: 4px;
+
+@mixin slider-size($lineHeight) {
+  .mo-slider-range {
+    line-height: $lineHeight;
+    font-size: 14px;
+  }
+
+  .mo-slider-line {
+    margin-top: ($lineHeight - $slider-line-height) / 2;
+    margin-bottom: ($lineHeight - $slider-line-height) / 2;
+  }
+}
+
+.mo-slider {
+  display: inline-block;
+  vertical-align: top;
+
+  &:after,
+  &:before {
+    display: table;
+    content: "";
+  }
+
+  &:after {
+    clear: both;
+  }
+
+  &-range {
+    float: left;
+
+    &--left {
+      padding-right: 12px;
+    }
+
+    &--right {
+      float: right;
+      padding-left: 12px;
+    }
+  }
+
+  //占位符
+  &-text-space {
+    float: right;
+    height: 10px;
+    padding-right: 16px;
+  }
+
+  //输入框长度
+  &__number {
+    float: right;
+    width: 60px;
+
+    //有控制器时输入框长度
+    &--controls {
+      width: 120px;
+    }
+  }
+
+  &-line {
+    position: relative;
+    height: $slider-line-height;
+    background-color: $disabled-border-color;
+    border-radius: 2px;
+    cursor: pointer;
+    width: $elem-width;
+
+    .mo-popups__arrow {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &__popper {
+      position: absolute !important;
+      top: -12px;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      box-shadow: 0px 9px 28px 8px rgba(0, 0, 0, 0.05),
+        0px 6px 16px 0px rgba(0, 0, 0, 0.08),
+        0px 3px 6px -4px rgba(0, 0, 0, 0.12);
+
+      .mo-popups__arrow--top {
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: 0;
+        height: 0;
+        border: 6px solid transparent;
+        border-top-color: #333;
+        margin-top: -2px;
+        border-width: 8px 6px;
+      }
+    }
+    &__content {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      margin-top: -7px;
+      margin-left: -7px;
+    }
+    &__bar {
+      position: absolute;
+      top: -2px;
+      width: 100%;
+      height: 100%;
+      border: 3px solid $main-active-color;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      user-select: none;
+
+      &--active,
+      &:hover {
+        transform: scale(1.2);
+        transform-origin: center;
+      }
+    }
+
+    &__inner {
+      background-color: $main-active-color;
+      border-radius: 2px;
+      height: 100%;
+    }
+  }
+  .input-text {
+    text-align: center;
+  }
+
+  &--disabled {
+    color: $disabled-color;
+
+    .mo-slider-line {
+      cursor: not-allowed;
+    }
+
+    .mo-slider-line__inner {
+      background-color: lighten($main-active-color, 40%);
+    }
+
+    .mo-slider-line__bar {
+      border-color: lighten($main-active-color, 40%);
+      cursor: not-allowed;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  &--small {
+    @include slider-size($form-line-height-s);
+  }
+
+  &--medium {
+    @include slider-size($form-line-height);
+  }
+
+  &--large {
+    @include slider-size($form-line-height-l);
+  }
+}

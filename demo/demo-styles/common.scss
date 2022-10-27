@@ -1,10 +1,10 @@
+
+$color: #0058e4;
+
 html,
 body {
   margin: 0;
   padding: 0;
-  // height: 100%;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", SimSun, sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -13,6 +13,10 @@ body {
   &.is-component {
     overflow: hidden;
   }
+}
+
+body {
+  min-width: 1440px;
 }
 
 a {
@@ -64,22 +68,29 @@ textarea {
 }
 
 .page-container {
-  padding-top: 55px;
+  padding: 55px 0;
+  color: #595959;
 
   h2 {
-    font-size: 28px;
-    color: #1f2d3d;
+    font-size: 24px;
     margin: 0;
   }
+
   h3 {
     font-size: 22px;
   }
+
+  h4 {
+    font-size: 18px;
+  }
+
   h2,
   h3,
   h4,
   h5 {
     font-weight: normal;
-    color: #1f2f3d;
+    // @include bold;
+    color: #262626;
 
     &:hover a {
       opacity: 0.4;
@@ -99,8 +110,9 @@ textarea {
 
   p {
     font-size: 14px;
-    color: #5e6d82;
+    color: #595959;
     line-height: 1.5em;
+    margin: 14px 0;
   }
 
   .tip {
@@ -129,10 +141,13 @@ textarea {
     }
   }
 }
+
 .demo {
   margin: 20px 0;
 }
+
 @media (max-width: 1140px) {
+
   .container,
   .page-container {
     width: 100%;
@@ -140,6 +155,7 @@ textarea {
 }
 
 @media (max-width: 768px) {
+
   .container,
   .page-container {
     padding: 0 20px;
@@ -148,4 +164,51 @@ textarea {
   #app.is-component .headerWrapper .container {
     padding: 0 12px;
   }
+}
+
+.reasy-doc.content {
+  ul:not(.timeline) {
+    list-style: disc;
+  }
+
+  blockquote {
+    padding: 8px 16px;
+    background-color: #fff5e4;
+    border-radius: 4px;
+    border-left: 5px solid $color;
+    margin: 20px 0;
+  }
+}
+
+
+.side-nav .nav-item .nav-item a {
+  &.active {
+    color: $color;
+    background-color: #f2f7ff;
+  }
+
+  &:hover {
+    color: $color;
+  }
+}
+
+.side-link__bar__btn {
+  border-color: $color;
+}
+
+.side-link__list__item.active {
+  color: $color;
+}
+
+.demo-block .demo-block-control {
+  color: rgba($color, 0.3);
+
+  &:hover {
+    color: $color;
+  }
+}
+
+.reasy-doc.content blockquote {
+  border-left-color: $color;
+  background-color: rgba($color, 0.05);
 }

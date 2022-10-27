@@ -1,0 +1,293 @@
+.mo-table {
+  position: relative;
+  color: $info-color;
+  overflow: hidden;
+
+  th {
+    user-select: none;
+  }
+
+  // .mo-table__scroll {
+  //   z-index: 1;
+  // }
+
+  &__header {
+    background: #fafafa;
+
+    &--sort {
+      cursor: pointer;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+    }
+
+    &__checkbox {
+      line-height: 20px;
+      vertical-align: top;
+    }
+
+    &__label {
+      vertical-align: top;
+      line-height: 20px;
+      color: #262626;
+    }
+
+    &--fixed {
+      position: absolute;
+      top: 0;
+      background-color: #fafafa;
+    }
+    &--left {
+      left: 0;
+    }
+    &--right {
+      right: 0;
+    }
+  }
+
+  &__body {
+    overflow-y: auto;
+    display: inline-block;
+    width: 100%;
+
+    .mo-scroll__wrap {
+      position: relative;
+    }
+  }
+
+  &__empty-data {
+    text-align: center;
+    width: 100%;
+  }
+
+  &__row {
+    &:hover {
+      background: #fafafa;
+    }
+
+    &--hover {
+      background: #fafafa;
+    }
+
+    &--active {
+      background-color: rgba($main-active-color, 0.06) !important;
+    }
+  }
+
+  &__stripe {
+    tr:nth-child(2n) {
+      background: $disabled-background-color;
+    }
+  }
+
+  &__border {
+    border: 1px solid $disabled-border-color;
+    border-bottom: 0;
+
+    & + & {
+      border-top: 0;
+    }
+
+    td {
+      & + td {
+        border-left: 1px solid $disabled-border-color;
+      }
+    }
+
+    th {
+      & + th {
+        border-left: 1px solid $disabled-border-color;
+      }
+    }
+  }
+
+  &__sort {
+    position: relative;
+    margin-left: 12px;
+  }
+
+  &__icon {
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    vertical-align: top;
+    width: 0px;
+    height: 0px;
+
+    &--up {
+      border: 4px solid transparent;
+      border-bottom: 4px solid $light-color;
+      top: 2px;
+
+      &.active {
+        border-bottom-color: $main-active-color;
+      }
+    }
+
+    &--down {
+      border: 4px solid transparent;
+      border-top: 4px solid $light-color;
+      top: 12px;
+
+      &.active {
+        border-top-color: $main-active-color;
+      }
+    }
+  }
+
+  &__expand {
+    position: relative;
+
+    &--inner {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+
+    &__icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+
+      &:hover {
+        color: $main-active-color;
+      }
+    }
+
+    &__wrapper {
+      padding-left: 24px;
+    }
+  }
+
+  &__footer {
+    margin-top: 16px;
+    text-align: right;
+  }
+
+  &__search {
+    margin-bottom: 16px;
+  }
+
+  &--large {
+    th,
+    td {
+      padding: 16px;
+    }
+  }
+
+  &--medium {
+    th,
+    td {
+      padding: 12px;
+    }
+  }
+
+  &--small {
+    th,
+    td {
+      padding: 8px;
+    }
+  }
+
+  &__loading {
+    .mo-loading__mask {
+      background-color: rgba(#fff, 0.8);
+    }
+  }
+
+  &.disabled {
+    color: #c0c0c0;
+
+    .mo-table__header {
+      background-color: #fafafa;
+
+      &:hover {
+        background-color: #fafafa;
+      }
+    }
+    .mo-table__header__label {
+      color: #c0c0c0;
+    }
+
+    .mo-table__icon--down {
+      border-top-color: #c0c0c0;
+    }
+    .mo-table__icon--up {
+      border-bottom-color: #c0c0c0;
+    }
+
+    .mo-table__header--sort {
+      cursor: not-allowed;
+      &:hover {
+        background-color: #fafafa;
+      }
+    }
+
+    .mo-table__row:hover {
+      background: #fff;
+    }
+  }
+
+  &__header-wrap {
+    width: 100%;
+    overflow: hidden;
+  }
+}
+
+.fixed {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: center;
+  width: 100%;
+  // max-width: 100%;
+  table-layout: fixed;
+  // background-color: #fff;
+
+  &--fixed {
+    position: absolute;
+    top: 0;
+    // z-index: 1;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+  }
+
+  &--left {
+    left: 0;
+  }
+
+  &--right {
+    right: 0;
+
+    .table {
+      transform: translateX(-100%);
+      margin-left: 100%;
+    }
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid $disabled-border-color;
+    font-weight: 400;
+    line-height: 22px;
+  }
+}
+
+.is_ {
+  &left {
+    text-align: left;
+  }
+  &center {
+    text-align: center;
+  }
+  &right {
+    text-align: right;
+  }
+}

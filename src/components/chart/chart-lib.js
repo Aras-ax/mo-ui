@@ -10,14 +10,17 @@ export const DEFAULT_COLORS = [
 
 // 图表基础配置
 export const CHARTBASE_CONFIG = {
+  // 注释
   comment: {
     height: 22,
     fontsize: 12
   },
+  // 标题
   title: {
     height: 32,
     fontsize: 16
   },
+  // 图例
   legend: {
     height: 22,
     fontsize: 14
@@ -35,7 +38,9 @@ export const TIP_OFFSET_HORIZONTAL = 12;
 
 // 柱图配置
 export const BAR_CONFIG = {
+  // 柱条间距
   barGap: 2,
+  // 柱条最大宽度
   MAX_WIDTH: 50
 };
 
@@ -50,6 +55,10 @@ export const BezierCurve = {
         Math.pow(arr[2 * i + 1] - arr[2 * j + 1], 2)
     );
   },
+
+  /**
+   * 计算贝塞尔曲线的控制点
+   */
   getControlPoints(x1, y1, x2, y2, x3, y3, t = 0.5) {
     let v = this.va(arguments, 0, 2);
     let d01 = this.dista(arguments, 0, 1);
@@ -66,6 +75,12 @@ export const BezierCurve = {
       }
     ];
   },
+
+  /**
+   * 计算贝塞尔曲线路径
+   * @param {Array} ctrlPoints 控制点集
+   * @param {Array} points 坐标点集
+   */
   drawCurvedPath(ctrlPoints, points) {
     let len = points.length;
     let path = "",

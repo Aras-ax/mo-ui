@@ -1,0 +1,76 @@
+.mo-radio {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  line-height: $form-line-height;
+  &__list {
+    font-size: 0;
+  }
+  &__item {
+    cursor: pointer;
+    // display: inline-block;
+    // font-size: $font-size-m;
+
+    &--disabled {
+      cursor: not-allowed;
+      color: $disabled-color;
+
+      .mo-radio__icon {
+        color: $border-color;
+        background-color: $disabled-background-color;
+
+        &:hover {
+          color: $border-color;
+        }
+
+        &.mo-radio__icon--active {
+          color: rgba($main-active-color, 0.4);
+          background-color: rgba($main-active-color, 0.05);
+          &:hover {
+            color: rgba($main-active-color, 0.4);
+          }
+        }
+      }
+      .mo-radio__label {
+        color: $disabled-color;
+      }
+    }
+    & + & {
+      margin-left: 26px;
+    }
+  }
+
+  &__icon {
+    color: $border-color;
+    margin-right: 8px;
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 50%;
+
+    &:hover {
+      color: $border-hover-color;
+    }
+    &:focus {
+      color: $main-active-color;
+      box-shadow: 0px 0px 4px 0px rgba($main-active-color, 0.5);
+    }
+
+    &--active {
+      color: $main-active-color;
+      &:hover {
+        color: $main-active-color;
+      }
+    }
+  }
+  &__label {
+    display: inline-block;
+    vertical-align: middle;
+    color: $title-color;
+    font-size: $font-size-m;
+
+    &_tips {
+      color: $light-color;
+    }
+  }
+}

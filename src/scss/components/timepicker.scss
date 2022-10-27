@@ -1,0 +1,155 @@
+@mixin timepicker-size($fontSize, $lineHeight) {
+  font-size: $fontSize;
+
+  .input-text,
+  .mo-timepicker__title {
+    font-size: $fontSize;
+    height: $lineHeight;
+    line-height: $lineHeight;
+  }
+
+  .mo-timepicker__li {
+    font-size: $fontSize;
+    height: $lineHeight - 2px;
+    line-height: $lineHeight - 2px;
+  }
+
+  .mo-timepicker__icon {
+    height: $lineHeight;
+    line-height: $lineHeight;
+  }
+
+  .mo-timepicker__splitter {
+    line-height: $lineHeight - 2px;
+  }
+}
+
+.mo-timepicker {
+  position: relative;
+  display: inline-block;
+  width: $elem-width;
+  vertical-align: top;
+
+  .mo-input {
+    width: 100%;
+  }
+
+  &__input {
+    .input-text {
+      padding-right: 2px !important;
+    }
+
+    &--half.mo-timepicker__input.mo-input {
+      width: calc(48% - 4px);
+    }
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 8px;
+    color: $light-color;
+    cursor: pointer;
+    font-size: 16px;
+
+    &.v-icon-close-plane {
+      color: $disabled-color;
+    }
+
+    &--disabled {
+      color: $disabled-color;
+      cursor: not-allowed;
+    }
+  }
+
+  &__label {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+
+    &.input-text {
+      padding: 0;
+    }
+  }
+
+  &__title {
+    border-bottom: 1px solid $disabled-border-color;
+    text-align: center;
+    color: $title-color;
+  }
+
+  &__wrapper {
+    &+& {
+      border-left: 2px solid $disabled-border-color;
+    }
+  }
+
+  &__splitter {
+    padding: 0;
+    font-size: 12px;
+    color: $disabled-color;
+  }
+
+  &__group {
+    &+& {
+      border-left: 1px solid $disabled-border-color;
+    }
+  }
+
+  &__li {
+    line-height: 30px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    color: $title-color;
+
+    &:hover {
+      background-color: rgba($main-active-color, 0.1);
+    }
+
+    &--active {
+      color: $main-active-color;
+      background-color: rgba($main-active-color, 0.1);
+    }
+
+    &--disabled {
+      color: $disabled-color;
+      cursor: not-allowed;
+    }
+
+    &--empty {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  .input-text {
+    padding-right: 30px;
+  }
+
+  &--medium {
+    @include timepicker-size($font-size-m, $form-line-height);
+  }
+
+  &--small {
+    @include timepicker-size($font-size-s, $form-line-height-s);
+  }
+
+  &--large {
+    @include timepicker-size($font-size-l, $form-line-height-l);
+  }
+
+  &__footer {
+    padding: 7px 16px;
+    border-top: 1px solid $disabled-border-color;
+    text-align: right;
+  }
+}

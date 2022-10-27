@@ -1,0 +1,130 @@
+.mo-pagination {
+  font-size: 12px;
+
+  &--border {
+    font-size: $font-size-m;
+  }
+  &__item {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+
+    & + & {
+      margin-left: 12px;
+    }
+  }
+
+  &__button {
+    display: inline-block;
+    line-height: 20px;
+    padding: 2px 0;
+    width: 24px;
+    font-size: $font-size-m;
+    text-align: center;
+    color: $info-color;
+    cursor: pointer;
+    vertical-align: middle;
+    user-select: none;
+
+    &.v-pagonation__icon {
+      font-size: 12px;
+    }
+
+    &:hover {
+      color: $main-active-color;
+    }
+
+    &--border {
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      padding: 0;
+      border: 1px solid $border-color;
+      border-radius: 2px;
+      vertical-align: middle;
+
+      &:hover {
+        border-color: $main-active-color;
+        background-color: #fff;
+      }
+
+      &:focus,
+      &:active {
+        background-color: rgba($main-active-color, 0.1);
+      }
+
+      &.mo-pagination__button--active {
+        background-color: $main-active-color;
+        border-color: $main-active-color;
+        color: #fff;
+      }
+
+      &.v-pagonation__icon {
+        font-size: 16px;
+      }
+    }
+
+    &--active {
+      background-color: $main-active-color;
+      border-color: $main-active-color;
+      color: #fff;
+      border-radius: 2px;
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    &--disabled {
+      //background-color: $disabled-background-color;
+      color: $disabled-color;
+      cursor: not-allowed;
+
+      &:hover {
+        color: $disabled-color;
+      }
+
+      &.mo-pagination__button--active {
+        background-color: $disabled-background-color;
+      }
+
+      &.mo-pagination__button--border {
+        border-color: $disabled-border-color;
+        background-color: $disabled-background-color;
+
+        &.mo-pagination__button--active {
+          background-color: $disabled-border-color;
+          color: $disabled-color;
+        }
+      }
+    }
+
+    & + .mo-pagination__button {
+      margin-left: 8px;
+    }
+
+    &.v-icon-more {
+      color: #ccc;
+      font-size: 20px;
+    }
+  }
+
+  &__select {
+    width: auto;
+    vertical-align: middle;
+  }
+
+  &__input {
+    width: 48px;
+    vertical-align: middle;
+  }
+
+  &__text {
+    line-height: $form-line-height-s;
+    padding: 0 8px;
+    vertical-align: middle;
+  }
+
+  .mo-select__icon {
+    font-size: 14px;
+  }
+}

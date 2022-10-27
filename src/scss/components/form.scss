@@ -1,0 +1,110 @@
+@mixin form-size($fontSize, $lineHeight) {
+  font-size: $fontSize;
+  line-height: $lineHeight;
+}
+
+.mo-form-item {
+  @include clearfix;
+  position: relative;
+  margin-bottom: 24px;
+  vertical-align: top;
+
+  &--inline {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+
+  &--disabled {
+    .mo-form-item__label,
+    .mo-form-item__tip,
+    .mo-form-item__unit,
+    .mo-form-item__description {
+      color: $disabled-color;
+    }
+  }
+
+  &__label {
+    float: left;
+    text-align: left;
+    word-break: keep-all;
+    white-space: nowrap;
+    &--right {
+      text-align: right;
+    }
+
+    &--medium {
+      @include form-size($font-size-m, $form-line-height);
+    }
+
+    &--small {
+      @include form-size($font-size-s, $form-line-height-s);
+    }
+
+    &--large {
+      @include form-size($font-size-l, $form-line-height-l);
+    }
+  }
+
+  &__content {
+    position: relative;
+    // line-height: 0;
+
+    &--no-label {
+      margin-left: 0;
+    }
+
+    &__error-pop {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: -1;
+      .mo-popups__wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    &__msg {
+      position: absolute;
+      font-size: 14px;
+      line-height: 20px;
+      max-width: 100%;
+    }
+  }
+
+  &--small {
+    .mo-form-item__tip {
+      line-height: $form-line-height-s;
+      font-size: 12px;
+    }
+  }
+  &--medium {
+    .mo-form-item__tip {
+      line-height: $form-line-height;
+      font-size: 14px;
+    }
+  }
+  &--large {
+    .mo-form-item__tip {
+      line-height: $form-line-height-l;
+      font-size: 16px;
+    }
+  }
+  &__unit {
+    color: $title-color;
+    margin-left: 8px;
+  }
+  &__description {
+    margin-left: 8px;
+    color: $light-color;
+  }
+}
+
+.is-error {
+  color: $error-color;
+}

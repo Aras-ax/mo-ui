@@ -1,0 +1,101 @@
+.mo-step {
+  $icon-size: 32px;
+  $border-width: 1px;
+  @mixin default-text($line-height, $font-size) {
+    display: inline-block;
+    color: $info-color;
+    line-height: $line-height;
+    font-size: $font-size;
+    font-weight: 400;
+  }
+
+  display: inline-block;
+  white-space: normal;
+
+  &--center {
+    text-align: center;
+  }
+
+  &__icon {
+    display: inline-block;
+    width: 100%;
+    height: $icon-size;
+    & > i {
+      display: inline-block;
+      font-size: $icon-size;
+    }
+    & > .is-text {
+      width: $icon-size;
+      height: $icon-size;
+      line-height: $icon-size - $border-width * 2;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      color: $light-color;
+      text-align: center;
+      border-radius: 16px;
+      border: $border-width solid $border-color;
+      cursor: default;
+    }
+  }
+
+  &__content {
+    margin-top: 4px;
+    .mo-step__title {
+      font-size: 14px;
+      &--default {
+        @include default-text(22px, 14px);
+      }
+    }
+    .mo-step__description {
+      margin-top: 2px;
+      font-size: 12px;
+      &--default {
+        @include default-text(16px, 12px);
+      }
+    }
+  }
+
+
+  // &--wait {}
+  &--process {
+    .is-text {
+      color: #fff;
+      border-color: $main-active-color;
+      background-color: $main-active-color;
+    }
+    .is-icon {
+      color: $main-active-color;
+    }
+    .mo-step__title--default {
+      @include bold;
+      color: $main-active-color;
+      font-weight: 500;
+    }
+  }
+  &--finish {
+    .is-icon,
+    .mo-step__title--default {
+      color: $main-active-color;
+    }
+  }
+  &--error {
+    .is-icon,
+    .mo-step__title--default {
+      color: darken($main-active-color, 7%);
+    }
+  }
+  &--disabled {
+    .is-text {
+      color: $disabled-color;
+      border-color: $disabled-border-color;
+      background-color: $disabled-background-color;
+      cursor: not-allowed;
+    }
+    .mo-step__title--default,
+    .mo-step__description--default {
+      color: $disabled-color;
+      cursor: not-allowed;
+    }
+  }
+}

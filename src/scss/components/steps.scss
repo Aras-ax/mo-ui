@@ -1,0 +1,37 @@
+@import "./step.scss";
+
+.mo-steps {
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  &__lines {
+    position: absolute;
+    top: $step-icon-size / 2;
+    width: 100%;
+    font-size: 0;
+    &-wrapper {
+      padding: 0 $step-icon-size / 2;
+      white-space: nowrap;
+    }
+    .mo-steps__line {
+      display: inline-block;
+      padding: 0 $step-icon-size / 2 + $step-icon-line-space;
+      &-inner {
+        width: 100%;
+        height: 1px;
+        background-color: $border-color;
+      }
+    }
+    .mo-steps__line--finish {
+      .mo-steps__line-inner {
+        background-color: rgba($main-active-color, 0.9);
+      }
+    }
+  }
+
+  .mo-steps__main {
+    @include clearfix;
+    font-size: 0;
+    white-space: nowrap;
+  }
+}

@@ -1,3 +1,4 @@
-.mo-row{
+@import "./col.scss";
+.mo-row {
   @include clearfix;
 }

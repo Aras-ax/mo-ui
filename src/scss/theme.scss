@@ -1,0 +1,22 @@
+$icon-color: #dddde2;
+$main-active-color-hover: #f2f7ff;
+
+.trade {
+  @import "./theme/alert.scss";
+  @import "./theme/button.scss";
+  @import "./theme/checkbox.scss";
+  @import "./theme/datepicker.scss";
+  @import "./theme/dialog.scss";
+  @import "./theme/dropdown.scss";
+  @import "./theme/form.scss";
+  @import "./theme/input.scss";
+  @import "./theme/edit.scss";
+  @import "./theme/notification.scss";
+  @import "./theme/pagination.scss";
+  @import "./theme/popups.scss";
+  @import "./theme/select.scss";
+  @import "./theme/slider.scss";
+  @import "./theme/tabs.scss";
+  @import "./theme/timepicker.scss";
+  @import "./theme/upload.scss";
+}
